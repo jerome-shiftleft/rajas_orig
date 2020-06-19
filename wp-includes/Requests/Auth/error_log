@@ -1,0 +1,1 @@
+[24-Jul-2018 21:54:12 America/Chicago] PHP Fatal error:  Interface 'Requests_Auth' not found in /home1/rajasfas/public_html/wp-includes/Requests/Auth/Basic.php on line 18

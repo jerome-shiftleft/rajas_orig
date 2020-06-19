@@ -1,0 +1,155 @@
+<!-- start Simple Custom CSS and JS -->
+<style type="text/css">
+/* Add your CSS code here.
+
+For example:
+.example {
+    color: red;
+}
+
+For brushing up on your CSS knowledge, check out http://www.w3schools.com/css/css_syntax.asp
+
+End of comment */ 
+
+.time-txt{
+  margin-top:50px;
+}
+.slick-date.active div{
+  border: 2px solid #79222d !important;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.ava-item.active{
+  border: 2px solid #79222d !important;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.avaheader{
+    background: #79222d;
+    color: white;
+	padding: .8rem 1.5rem .75rem;
+    border-radius: 4rem;
+    transition: .15s ease;
+  	width:200px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:20px;
+  margin-top:35px;
+}
+#avatime{
+  width:70%;
+  margin-left:auto;
+  margin-right:auto;
+  height:0px;
+  overflow:hidden;
+}
+.bookingform{
+  width:70%;
+  margin-left:auto;
+  margin-right:auto;
+  display:none; 
+}
+.ava-item{
+  display:inline-block;
+  padding: 3rem 1rem;
+  background: #F4F4F4;
+  border: 1px solid #979797;
+  border-radius: 2px;
+  color: #555;
+  outline: none;
+  text-decoration: none;
+  position: relative;
+  -webkit-transition: .1s ease;
+  transition: .1s ease;
+  width:21.5%;
+  text-align:center;
+  margin:10px;
+  padding-top:15px;
+  padding-bottom:15px;
+  cursor:pointer;
+  font-size:18px;
+}
+.ava-item.choice-disabled{
+    background-color: #F9F9F9;
+    border-color: #D5D5D5;
+    color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.confirmed-time {
+  width:70%;
+    background: #79222d;
+    color: white;
+	padding: .8rem 1.5rem .75rem;
+    border-radius: 4rem;
+    transition: .15s ease;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+  font-weight:bold;
+}
+.slick-prev{
+    position: relative;
+    left: -40px;
+    top: 75px;
+  	z-index:999;
+    font-weight:bold;
+    font-size:22px;
+}
+.slick-next{
+    position: absolute;
+    right: -30px;
+    top: 75px;
+  	z-index:999;
+    font-weight:bold;
+  font-size:22px;
+}
+header{
+  padding-top:55px
+}
+
+@media only screen and (max-width: 900px) {
+  .pignose-calendar {
+    width:100% !important;
+  }
+  .calendar-title{
+   	margin-left:0px !important; 
+  }
+  .dates-disabled-reason{
+    margin-left:0px !important; 
+  }
+  h3.appointment-header{
+    font-size:32px !important;
+  }
+  .time-txt{
+    margin-top:30px;
+  }
+  #avatime{
+   	width:100%; 
+  }
+  .ava-item{
+    width:42%;
+  }
+  .bookingform{
+  	width:100%;
+  }
+  .confirmed-time{
+    width:100%;
+    margin-bottom:30px;
+  }
+  .contact-form.appointment{
+    margin-top:5px !important;
+  }
+  html #page-header-bg .span_6 h1, .single.single-post .section-title h1{
+    font-size:35px !important;
+    line-height:50px !important;
+    margin-top:0px;
+  }
+  .slick-prev{
+    top: 85px;
+  }
+  .slick-next{
+    top: 85px;
+  }
+}</style>
+<!-- end Simple Custom CSS and JS -->

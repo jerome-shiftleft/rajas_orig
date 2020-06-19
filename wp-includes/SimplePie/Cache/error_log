@@ -1,0 +1,4 @@
+[24-Jul-2018 21:49:13 America/Chicago] PHP Fatal error:  Interface 'SimplePie_Cache_Base' not found in /home1/rajasfas/public_html/wp-includes/SimplePie/Cache/Memcache.php on line 58
+[24-Jul-2018 21:51:47 America/Chicago] PHP Fatal error:  Class 'SimplePie_Cache_DB' not found in /home1/rajasfas/public_html/wp-includes/SimplePie/Cache/MySQL.php on line 57
+[24-Jul-2018 21:58:50 America/Chicago] PHP Fatal error:  Interface 'SimplePie_Cache_Base' not found in /home1/rajasfas/public_html/wp-includes/SimplePie/Cache/File.php on line 51
+[24-Jul-2018 22:27:30 America/Chicago] PHP Fatal error:  Interface 'SimplePie_Cache_Base' not found in /home1/rajasfas/public_html/wp-includes/SimplePie/Cache/DB.php on line 51

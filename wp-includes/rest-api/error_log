@@ -1,0 +1,1 @@
+[24-Jul-2018 21:47:14 America/Chicago] PHP Fatal error:  Class 'WP_HTTP_Response' not found in /home1/rajasfas/public_html/wp-includes/rest-api/class-wp-rest-response.php on line 17

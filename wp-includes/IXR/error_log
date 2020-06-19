@@ -1,0 +1,2 @@
+[24-Jul-2018 21:38:36 America/Chicago] PHP Fatal error:  Class 'IXR_Client' not found in /home1/rajasfas/public_html/wp-includes/IXR/class-IXR-clientmulticall.php on line 8
+[24-Jul-2018 21:38:37 America/Chicago] PHP Fatal error:  Class 'IXR_Server' not found in /home1/rajasfas/public_html/wp-includes/IXR/class-IXR-introspectionserver.php on line 9

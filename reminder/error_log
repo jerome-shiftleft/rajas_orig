@@ -1,0 +1,220 @@
+[02-Mar-2019 21:44:30 America/Chicago] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (2019-02-28%2012:30%20PM) at position 10 (%): Unexpected character in /home1/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home1/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('2019-02-28%2012...')
+#1 /home1/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('2019-02-28%2012...')
+#2 /home1/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('2019-02-28%2012...', 'dtstart')
+#3 /home1/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '2019-02-28%2012...')
+#4 /home1/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home1/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home1/rajasfas/public_html/reminder/ICS.php on line 124
+[01-May-2019 13:58:15 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (2019-05-17%2012:00%20PM) at position 10 (%): Unexpected character in /home1/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home1/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('2019-05-17%2012...')
+#1 /home1/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('2019-05-17%2012...')
+#2 /home1/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('2019-05-17%2012...', 'dtstart')
+#3 /home1/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '2019-05-17%2012...')
+#4 /home1/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home1/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home1/rajasfas/public_html/reminder/ICS.php on line 124
+[25-Sep-2019 06:27:34 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5342-32-59 32:33 BZ) at position 6 (2): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5342-32-59 32:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5342-32-59 32:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5342-32-59 32:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5342-32-59 32:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[26-Sep-2019 12:56:15 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5342-32-51 30:33 BZ) at position 6 (2): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5342-32-51 30:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5342-32-51 30:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5342-32-51 30:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5342-32-51 30:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[01-Oct-2019 05:47:27 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5342-43-34 45:63 CZ) at position 6 (3): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5342-43-34 45:6...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5342-43-34 45:6...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5342-43-34 45:6...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5342-43-34 45:6...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[26-Oct-2019 05:27:45 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5342-43-59 45:33 CZ) at position 6 (3): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5342-43-59 45:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5342-43-59 45:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5342-43-59 45:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5342-43-59 45:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[19-Dec-2019 11:01:14 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5342-45-53 30:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5342-45-53 30:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5342-45-53 30:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5342-45-53 30:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5342-45-53 30:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[24-Jan-2020 09:42:58 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-34-63 45:33 CZ) at position 6 (4): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-34-63 45:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-34-63 45:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-34-63 45:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-34-63 45:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[24-Jan-2020 09:48:20 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-34-63 45:33 CZ) at position 6 (4): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-34-63 45:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-34-63 45:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-34-63 45:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-34-63 45:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[30-Jan-2020 12:31:52 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-36 45:33 CZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-36 45:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-36 45:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-36 45:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-36 45:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[03-Feb-2020 09:55:37 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-37 32:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-37 32:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-37 32:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-37 32:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-37 32:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[05-Feb-2020 09:34:12 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-31 30:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-31 30:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-31 30:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-31 30:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-31 30:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[08-Feb-2020 13:03:24 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-47 38:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-47 38:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-47 38:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-47 38:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-47 38:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[10-Feb-2020 08:48:31 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-40 37:63 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-40 37:6...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-40 37:6...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-40 37:6...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-40 37:6...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[12-Feb-2020 07:31:26 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-40 30:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-40 30:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-40 30:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-40 30:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-40 30:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[17-Feb-2020 10:48:54 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-41 43:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-41 43:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-41 43:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-41 43:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-41 43:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[21-Feb-2020 08:12:32 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-51 31:33 BZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-51 31:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-51 31:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-51 31:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-51 31:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[21-Feb-2020 08:57:35 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-35-54 45:33 CZ) at position 6 (5): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-35-54 45:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-35-54 45:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-35-54 45:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-35-54 45:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[24-Feb-2020 08:11:52 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-36-35 38:33 BZ) at position 6 (6): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-36-35 38:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-36-35 38:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-36-35 38:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-36-35 38:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[27-Feb-2020 11:34:12 UTC] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-36-36 32:33 BZ) at position 6 (6): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-36-36 32:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-36-36 32:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-36-36 32:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-36-36 32:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[05-Mar-2020 02:27:35 America/Boise] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-36-43 32:33 BZ) at position 6 (6): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-36-43 32:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-36-43 32:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-36-43 32:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-36-43 32:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[04-May-2020 23:48:23 America/Boise] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-38-31 30:33 BZ) at position 6 (8): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-38-31 30:3...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-38-31 30:3...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-38-31 30:3...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-38-31 30:3...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124

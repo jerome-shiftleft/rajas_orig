@@ -1,0 +1,30 @@
+[24-Jul-2018 21:38:41 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.tag.id3v1.php on line 18
+[24-Jul-2018 21:38:43 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.flv.php on line 76
+[24-Jul-2018 21:38:46 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.ogg.php:17
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.ogg.php on line 17
+[24-Jul-2018 21:38:48 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.mp3.php on line 25
+[24-Jul-2018 21:39:21 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.matroska.php on line 216
+[24-Jul-2018 21:40:19 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.flac.php:18
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.flac.php on line 18
+[24-Jul-2018 21:40:59 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.quicktime.php:18
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.quicktime.php on line 18
+[24-Jul-2018 21:42:13 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio.dts.php on line 21
+[24-Jul-2018 21:45:46 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.riff.php:26
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.riff.php on line 26
+[24-Jul-2018 22:09:36 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.tag.id3v2.php:17
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.tag.id3v2.php on line 17
+[24-Jul-2018 22:23:21 America/Chicago] PHP Fatal error:  Uncaught Error: Class 'getid3_lib' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.asf.php:17
+Stack trace:
+#0 {main}
+  thrown in /home1/rajasfas/public_html/wp-includes/ID3/module.audio-video.asf.php on line 17
+[24-Jul-2018 22:25:26 America/Chicago] PHP Fatal error:  Class 'getid3_handler' not found in /home1/rajasfas/public_html/wp-includes/ID3/module.tag.lyrics3.php on line 18
