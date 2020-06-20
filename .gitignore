@@ -3,5 +3,4 @@ wp-config.php
 error_log
 vendor/
 wp-content/wflogs/
-wp-content/uploads/2017/
 wp-content/uploads/iw-backup/
