@@ -1,5 +1,6 @@
 .htaccess
 wp-config.php
 error_log
+srdb/
 wp-content/wflogs/
 wp-content/uploads/iw-backup/
