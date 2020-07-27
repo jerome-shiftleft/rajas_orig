@@ -103,8 +103,8 @@ class OMAPI_ConstantContact {
 
 		$this->hook = add_submenu_page(
 			$is_current ? 'optin-monster-api-settings' : 'optin-monster-api-settings-no-menu', //parent slug
-			__( 'OptinMonster with Constant Contact', 'optin-monster-api' ), // page title,
-			__( 'OptinMonster + Constant Contact', 'optin-monster-api' ),
+			esc_html__( 'OptinMonster with Constant Contact', 'optin-monster-api' ), // page title,
+			esc_html__( 'OptinMonster + Constant Contact', 'optin-monster-api' ),
 			apply_filters( 'optin_monster_api_menu_cap', 'manage_options', $slug ), // cap
 			$slug, // slug
 			array( $this, 'display_page' ) // callback
@@ -123,6 +123,12 @@ class OMAPI_ConstantContact {
 	 * @since 1.6.0
 	 */
 	public function constant_contact_cta_notice() {
+
+		// Only consider showing the notice when WPForms plugin is not active.
+		// Here WPForms_Constant_Contact class existence is checked which shows the notice in WPForms plugin.
+		if ( class_exists( 'WPForms_Constant_Contact' ) ) {
+			return;
+		}
 
 		// Only consider showing the review request to admin users.
 		if ( ! is_super_admin() ) {

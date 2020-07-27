@@ -651,6 +651,13 @@ class OMAPI_Rules {
 		$this->check_is_home_and_show_on_index();
 
 		foreach ( $taxonomies as $taxonomy => $ids_to_check ) {
+			// Tags are saved differently.
+			// https://github.com/awesomemotive/optin-monster-wp-api/issues/104
+			if ( ! empty( $ids_to_check[0] ) && false !== strpos( $ids_to_check[0], ',' ) ) {
+				$ids_to_check = explode( ',', (string) $ids_to_check[0] );
+			}
+
+			$ids_to_check = (array) $ids_to_check;
 
 			if ( $this->post_id ) {
 				$all_terms = get_the_terms( $this->post_id, $taxonomy );
@@ -665,10 +672,13 @@ class OMAPI_Rules {
 				}
 			}
 
-			if ( ! $this->is_inline_check && OMAPI_Utils::is_term_archive( $ids_to_check, $taxonomy ) ) {
-				throw new OMAPI_Rules_True( "not inline and is on $taxonomy archive" );
+			if ( ! $this->is_inline_check ) {
+				foreach ( $ids_to_check as $tax_id ) {
+					if ( OMAPI_Utils::is_term_archive( $tax_id, $taxonomy ) ) {
+						throw new OMAPI_Rules_True( "not inline and is on $taxonomy archive" );
+					}
+				}
 			}
-
 		}
 
 		throw new OMAPI_Rules_False( 'no taxonomy matches found' );
@@ -736,6 +746,8 @@ class OMAPI_Rules {
 			case 'global_override':
 			case 'advanced_settings':
 				return $this->$property;
+			default:
+			break;
 		}
 
 		throw new Exception( sprintf( esc_html__( 'Invalid %1$s property: %2$s', 'optin-monster-api' ), __CLASS__, $property ) );

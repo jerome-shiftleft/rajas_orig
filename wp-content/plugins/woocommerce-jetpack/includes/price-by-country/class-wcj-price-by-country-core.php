@@ -2,8 +2,8 @@
 /**
  * Booster for WooCommerce - Price by Country - Core
  *
- * @version 4.4.0
- * @author  Algoritmika Ltd.
+ * @version 5.0.0
+ * @author  Pluggabl LLC.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -38,16 +38,15 @@ class WCJ_Price_by_Country_Core {
 	/**
 	 * init.
 	 *
-	 * @version 3.5.0
+	 * @version 5.0.0
 	 * @since   2.9.0
 	 */
 	function init() {
 		wcj_session_maybe_start();
-		if ( isset( $_REQUEST['wcj-country'] ) ) {
-			wcj_session_set( 'wcj-country', $_REQUEST['wcj-country'] );
-		}
-		if ( isset( $_REQUEST['wcj_country_selector'] ) ) {
-			wcj_session_set( 'wcj-country', $_REQUEST['wcj_country_selector'] );
+		$req_country = isset( $_REQUEST['wcj-country'] ) && ! empty( $country = $_REQUEST['wcj-country'] ) ? $country : ( isset( $_REQUEST['wcj_country_selector'] ) && ! empty( $country = $_REQUEST['wcj_country_selector'] ) ? $country : null );
+		if ( ! empty( $req_country ) ) {
+			wcj_session_set( 'wcj-country', $req_country );
+			do_action( 'wcj_price_by_country_set_country', $req_country, $this->get_currency_by_country( $req_country ) );
 		}
 	}
 
@@ -85,7 +84,7 @@ class WCJ_Price_by_Country_Core {
 	/**
 	 * maybe_init_customer_country_by_ip.
 	 *
-	 * @version 3.4.0
+	 * @version 5.0.0
 	 * @since   2.9.0
 	 */
 	function maybe_init_customer_country_by_ip() {
@@ -93,6 +92,7 @@ class WCJ_Price_by_Country_Core {
 			if ( null === wcj_session_get( 'wcj-country' ) ) {
 				if ( null != ( $country = $this->get_customer_country_by_ip() ) ) {
 					wcj_session_set( 'wcj-country', $country );
+					do_action( 'wcj_price_by_country_set_country', $country, $this->get_currency_by_country( $country ) );
 				}
 			}
 		}
@@ -412,11 +412,32 @@ class WCJ_Price_by_Country_Core {
 	/**
 	 * change_price.
 	 *
-	 * @version 2.7.0
+	 * @version 4.9.0
 	 */
 	function change_price( $price, $product ) {
 		if ( null != ( $group_id = $this->get_customer_country_group_id() ) ) {
-			return wcj_price_by_country( $price, $product, $group_id );
+			if ( 'yes' === get_option( 'wcj_price_by_country_compatibility_woo_discount_rules', 'no' ) ) {
+				global $flycart_woo_discount_rules;
+				if (
+					! empty( $flycart_woo_discount_rules ) &&
+					! has_action( 'woocommerce_before_calculate_totals', array( $flycart_woo_discount_rules, 'applyDiscountRules' ) )
+					&& ( $product_cart_id = WC()->cart->generate_cart_id( wcj_get_product_id( $product ) ) ) &&
+					WC()->cart->find_product_in_cart( $product_cart_id )
+				) {
+					return $price;
+				}
+			}
+			$do_save='yes'===get_option('wcj_price_by_country_save_prices','no');
+			$_current_filter = current_filter();
+			if ( empty( $_current_filter ) ) {
+				$_current_filter = 'wcj_filter__none';
+			}
+			if ( $do_save && isset( WCJ()->modules['price_by_country']->calculated_products_prices[ wcj_get_product_id( $product ) ][ $_current_filter ] ) ) {
+				return WCJ()->modules['price_by_country']->calculated_products_prices[ wcj_get_product_id( $product ) ][ $_current_filter ];
+			}
+			$new_price = wcj_price_by_country( $price, $product, $group_id );
+			WCJ()->modules['price_by_country']->calculated_products_prices[ wcj_get_product_id( $product ) ][ $_current_filter ] = $new_price;
+			return $new_price;
 		}
 		// No changes
 		return $price;

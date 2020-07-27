@@ -74,6 +74,9 @@ class Maintain {
         else if ($settings['migration_version'] === "2.0") {
             (new Update())->update20to21();
         }
+        else if ($settings['migration_version'] === "2.1") {
+            (new Update())->update21to22();
+        }
     }
 
     /**
@@ -98,7 +101,7 @@ class Maintain {
                 $admin_bar->add_menu(array(
                     'id' => 'buttonizer_buttons',
                     'parent' => 'buttonizer',
-                    'title' => 'Buttons',
+                    'title' => __('Manage buttons', 'buttonizer-multifunctional-button'),
                     'href' => admin_url() . 'admin.php?page=Buttonizer', // (!is_admin() ? '#' . urlencode($_SERVER["REQUEST_URI"]) : '')
                     'meta' => array(),
                 ));
@@ -107,11 +110,10 @@ class Maintain {
                 $admin_bar->add_menu(array(
                     'id' => 'buttonizer_settings',
                     'parent' => 'buttonizer',
-                    'title' => __('Settings'),
-                    'href' => admin_url() . 'admin.php?page=Buttonizer#settings',
+                    'title' => __('Settings', 'buttonizer-multifunctional-button'),
+                    'href' => admin_url() . 'admin.php?page=Buttonizer#/settings/preferences',
                     'meta' => array(),
                 ));
-
             }
         }
     }

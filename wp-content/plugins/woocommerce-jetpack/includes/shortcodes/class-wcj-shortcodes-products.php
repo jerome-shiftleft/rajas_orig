@@ -2,8 +2,8 @@
 /**
  * Booster for WooCommerce - Shortcodes - Products
  *
- * @version 4.6.0
- * @author  Algoritmika Ltd.
+ * @version 5.0.0
+ * @author  Pluggabl LLC.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -857,7 +857,7 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 	/**
 	 * wcj_product_wholesale_price_table.
 	 *
-	 * @version 4.6.0
+	 * @version 5.0.0
 	 * @todo    (maybe) `if ( 'yes' === $atts['add_percent_row'] )` for 'fixed' or 'price_directly'; `if ( 'yes' === $atts['add_discount_row'] )` for 'percent' or 'price_directly'
 	 */
 	function wcj_product_wholesale_price_table( $atts ) {
@@ -968,6 +968,9 @@ class WCJ_Products_Shortcodes extends WCJ_Shortcodes {
 					$the_price_original = wc_price( $the_price_original );
 				}
 			}
+
+			// Heading Format
+			$atts['heading_format'] = 'from %level_min_qty% pcs.' === $atts['heading_format'] ? get_option( 'wcj_wholesale_price_table_sc_title_format', __( 'from %level_min_qty% pcs.', 'woocommerce-jetpack' ) ) : $atts['heading_format'];
 
 			$level_max_qty = ( isset( $wholesale_price_levels[ $i + 1 ]['quantity'] ) ) ?
 				$atts['before_level_max_qty'] . ( $wholesale_price_levels[ $i + 1 ]['quantity'] - 1 ) : $atts['last_level_max_qty'];

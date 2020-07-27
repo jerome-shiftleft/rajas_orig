@@ -9,16 +9,9 @@ class Api {
     private static $authenticated = false;
 
     /**
-     * Api
+     * Register API endpoints
      */
     public function __construct() {
-        add_action( 'rest_api_init', [$this, 'init']);
-    }
-
-    /**
-     * Initialize URLS
-     */
-    public function init() {
         // Frontend api endpoints
         (new Buttons\ApiButtons())->registerRoute();
 
@@ -31,6 +24,7 @@ class Api {
         (new Update\ApiMigrate())->registerRoute();
         (new PageRules\ApiPageRules())->registerRoute();
         (new TimeSchedules\ApiTimeSchedules())->registerRoute();
+        (new Wordpress\ApiCustomCss())->registerRoute();
     }
 
     /**

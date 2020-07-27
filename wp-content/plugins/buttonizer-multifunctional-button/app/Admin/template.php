@@ -6,9 +6,18 @@ if (!defined('ABSPATH') || !defined('WP_ADMIN')) {
     exit("No script kiddies please");
 }
 
-if ( is_rtl() ) {
+if (is_rtl()) {
 	$body_classes[] = 'rtl';
 }
+
+global $current_screen;
+
+// Catch plugins that call get_current_screen()
+if (empty($current_screen)) {
+	set_current_screen();
+}
+
+$body_classes[] = ' locale-' . sanitize_html_class( strtolower( str_replace( '_', '-', get_user_locale() ) ) );
 
 ?>
 <!DOCTYPE html>
@@ -24,8 +33,13 @@ if ( is_rtl() ) {
 	do_action( 'admin_print_scripts' );
 	
 	?>
+
+	<script type="text/javascript">
+		addLoadEvent = function(func){if(typeof jQuery!="undefined")jQuery(document).ready(func);else if(typeof wpOnload!='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
+	</script>
 </head>
-<body>
+<body class="<?=implode(" ", $body_classes)?>">
 
 <div class="buttonizer-admin-overlay">
 	<p><b><?php echo __('Buttonizer is loading...', 'buttonizer-multifunctional-button') ?></b></p>

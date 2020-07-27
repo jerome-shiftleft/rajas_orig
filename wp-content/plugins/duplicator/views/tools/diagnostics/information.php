@@ -64,7 +64,7 @@ if ($section == "info" || $section == '') {
 					if (!empty($glob_files)) {
 						foreach ($glob_files as $glob_file) {
 							$installer_log_file_path = $glob_file;
-							DUP_IO::copyFile($installer_log_file_path, DUPLICATOR_SSDIR_PATH_INSTALLER);
+							DUP_IO::copyFile($installer_log_file_path, DUP_Settings::getSsdirInstallerPath());
 						}
 					}
 
@@ -76,7 +76,12 @@ if ($section == "info" || $section == '') {
 						$file_path = '';
 						if (stripos($filename, '[hash]') !== false) {
 							$glob_files = glob($path);
+                            
 							if (!empty($glob_files)) {
+                                if(count($glob_files) > 10) {                                
+                                    throw new Exception('Trying to delete too many files. Please contact Duplicator support.');
+                                }
+                                
 								foreach ($glob_files as $glob_file) {
 									$file_path = $glob_file;
 									DUP_IO::deleteFile($file_path);
@@ -95,7 +100,7 @@ if ($section == "info" || $section == '') {
 								DUP_IO::deleteTree($path);
 								$removed_files = true;
 							}
-						}
+						}                            
 
 						if (!empty($file_path)) {
                             if (file_exists($file_path)) {

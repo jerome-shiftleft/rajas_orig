@@ -5,7 +5,7 @@ Email: diana@burduja.eu
 Tags: CSS, JS, javascript, custom CSS, custom JS, custom style, site css, add style, customize theme, custom code, external css, css3, style, styles, stylesheet, theme, editor, design, admin
 Requires at least: 3.0.1
 Tested up to: 5.4 
-Stable tag: 3.31
+Stable tag: 3.31.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.2.4
@@ -105,6 +105,10 @@ $. Add/Edit HTML
 
 == Changelog ==
 
+
+= 3.31.1 =
+* 05/05/2020
+* Declare compatibility WooCommerce 4.1
 
 = 3.31 =
 * 03/21/2020

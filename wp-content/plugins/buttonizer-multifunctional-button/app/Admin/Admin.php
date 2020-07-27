@@ -46,7 +46,7 @@ class Admin
     function permalink_admin_notice()
     {
         echo  '<div class="notice notice-error">
-            <p><b>Buttonizer:</b> A custom permalink structure is required for Buttonizer to work. <a href="' . admin_url( 'options-permalink.php' ) . '">Go to permalink structure settings</a></p>
+            <p><b>Buttonizer:</b> ' . __( 'A custom permalink structure is required for Buttonizer to work.', 'buttonizer-multifunctional-button' ) . ' <a href="' . admin_url( 'options-permalink.php' ) . '">' . __( 'Go to permalink structure settings.', 'buttonizer-multifunctional-button' ) . '</a></p>
         </div>' ;
     }
     
@@ -79,17 +79,17 @@ class Admin
         add_submenu_page(
             'Buttonizer',
             'Settings',
-            __( 'Settings' ),
+            __( 'Settings', 'buttonizer-multifunctional-button' ),
             'manage_options',
             'admin.php?page=Buttonizer#/settings'
         );
         // Plugin information, add links
         add_filter( "plugin_action_links_" . plugin_basename( BUTTONIZER_PLUGIN_DIR ), function ( $aLinks ) {
             $aButtonizerLinks = [
-                '<a href="' . admin_url( 'admin.php?page=Buttonizer-contact' ) . '">I need support</a><br />',
-                '<a href="https://community.buttonizer.pro/" target="_blank">Community forums</a>',
-                '<a href="' . admin_url( 'admin.php?page=Buttonizer' ) . '">Manage buttons</a>',
-                '<a href="' . admin_url( 'admin.php?page=Buttonizer#/settings' ) . '">Settings</a>'
+                '<a href="' . admin_url( 'admin.php?page=Buttonizer-contact' ) . '">' . __( 'I need support', 'buttonizer-multifunctional-button' ) . '</a><br />',
+                '<a href="https://community.buttonizer.pro/" target="_blank">' . __( 'Community forums', 'buttonizer-multifunctional-button' ) . '</a>',
+                '<a href="' . admin_url( 'admin.php?page=Buttonizer' ) . '">' . __( 'Manage buttons', 'buttonizer-multifunctional-button' ) . '</a>',
+                '<a href="' . admin_url( 'admin.php?page=Buttonizer#/settings' ) . '">' . __( 'Settings', 'buttonizer-multifunctional-button' ) . '</a>'
             ];
             return array_merge( $aLinks, $aButtonizerLinks );
         } );

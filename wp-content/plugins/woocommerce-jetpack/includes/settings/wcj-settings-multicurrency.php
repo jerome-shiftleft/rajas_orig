@@ -2,9 +2,9 @@
 /**
  * Booster for WooCommerce - Settings - Multicurrency (Currency Switcher)
  *
- * @version 4.6.0
+ * @version 5.0.0
  * @since   2.8.0
- * @author  Algoritmika Ltd.
+ * @author  Pluggabl LLC.
  * @todo    "pretty prices"
  */
 
@@ -99,6 +99,15 @@ $settings = array(
 		'class'    => 'widefat',
 	),
 	array(
+		'title'             => __( 'Convert Shipping Values', 'woocommerce-jetpack' ),
+		'desc'              => empty( $message = apply_filters( 'booster_message', '', 'desc' ) ) ? __( 'Enable', 'woocommerce-jetpack' ) : $message,
+		'desc_tip'          => __( 'Disable it if you have some other plugin already converting it like WPML.', 'woocommerce-jetpack' ),
+		'custom_attributes' => apply_filters( 'booster_message', '', 'disabled' ),
+		'id'                => 'wcj_multicurrency_convert_shipping_values',
+		'default'           => 'yes',
+		'type'              => 'checkbox',
+	),
+	array(
 		'type'     => 'sectionend',
 		'id'       => 'wcj_multicurrency_options',
 	),
@@ -108,12 +117,29 @@ $settings = array(
 		'id'       => 'wcj_multicurrency_compatibility',
 	),
 	array(
-		'title'    => __( 'WooCommerce Coupons', 'woocommerce-jetpack' ),
+		'title'    => __( 'Prices and Currencies by Country Module', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-		'desc_tip' => __( 'When a fixed coupon is used its value changes according to the current currency', 'woocommerce-jetpack' ),
+		'desc_tip' => __( 'Switches currency according to country.', 'woocommerce-jetpack' ) . '<br />' . sprintf( __( 'Once Enabled, please set all the currency values from the <a href="%s">Country</a> module as 1. The MultiCurrency module values will be used instead.', 'woocommerce-jetpack' ), admin_url( 'admin.php?page=wc-settings&tab=jetpack&wcj-cat=prices_and_currencies&section=price_by_country' ) ),
+		'id'       => 'wcj_multicurrency_compatibility_price_by_country_module',
+		'default'  => 'no',
+		'type'     => 'checkbox',
+	),
+	array(
+		'title'    => __( 'WooCommerce Fixed Coupons', 'woocommerce-jetpack' ),
+		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
+		'desc_tip' => __( 'When a fixed coupon is used its value changes according to the current currency.', 'woocommerce-jetpack' ),
 		'id'       => 'wcj_multicurrency_compatibility_wc_coupons',
 		'default'  => 'no',
 		'type'     => 'checkbox',
+	),
+	array(
+		'title'             => __( 'WooCommerce Coupons - Min & Max amount', 'woocommerce-jetpack' ),
+		'custom_attributes' => apply_filters( 'booster_message', '', 'disabled' ),
+		'desc'              => empty( $message = apply_filters( 'booster_message', '', 'desc' ) ) ? __( 'Enable', 'woocommerce-jetpack' ) : $message,
+		'desc_tip'          => __( 'Converts min and max amount values from WooCommerce coupons.', 'woocommerce-jetpack' ),
+		'id'                => 'wcj_multicurrency_compatibility_wc_coupons_min_max',
+		'default'           => 'no',
+		'type'              => 'checkbox',
 	),
 	array(
 		'title'    => __( 'WooCommerce Smart Coupons', 'woocommerce-jetpack' ),
@@ -125,7 +151,7 @@ $settings = array(
 	array(
 		'title'    => __( 'WooCommerce Price Filter', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-		'desc_tip' => __( 'Adds Compatibility with Price Filter widget', 'woocommerce-jetpack' ),
+		'desc_tip' => __( 'Adds Compatibility with Price Filter widget.', 'woocommerce-jetpack' ),
 		'id'       => 'wcj_multicurrency_compatibility_wc_price_filter',
 		'default'  => 'no',
 		'type'     => 'checkbox',
@@ -133,7 +159,7 @@ $settings = array(
 	array(
 		'title'    => __( 'Price Sorting with Per Product', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-		'desc_tip' => __( 'Fixes Price Sorting if Per Product option is enabled', 'woocommerce-jetpack' ),
+		'desc_tip' => __( 'Fixes Price Sorting if Per Product option is enabled.', 'woocommerce-jetpack' ),
 		'id'       => 'wcj_multicurrency_compatibility_price_sorting_per_product',
 		'default'  => 'no',
 		'type'     => 'checkbox',
@@ -141,7 +167,7 @@ $settings = array(
 	array(
 		'title'    => __( 'WooCommerce Import', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-		'desc_tip' => __( 'Fixes WooCommerce Import Tool preventing it from converting some uppercase meta to lowercase', 'woocommerce-jetpack' ),
+		'desc_tip' => __( 'Fixes WooCommerce Import Tool preventing it from converting some uppercase meta to lowercase.', 'woocommerce-jetpack' ),
 		'id'       => 'wcj_multicurrency_compatibility_wc_import',
 		'default'  => 'no',
 		'type'     => 'checkbox',
@@ -149,10 +175,37 @@ $settings = array(
 	array(
 		'title'    => __( 'WPC Product Bundles', 'woocommerce-jetpack' ),
 		'desc'     => __( 'Enable', 'woocommerce-jetpack' ),
-		'desc_tip' => sprintf( __( 'Adds compatibility with <a href="%s" target="_blank">WPC Product Bundles</a> plugin', 'woocommerce-jetpack' ), 'https://wordpress.org/plugins/woo-product-bundle/' ),
+		'desc_tip' => sprintf( __( 'Adds compatibility with <a href="%s" target="_blank">WPC Product Bundles</a> plugin.', 'woocommerce-jetpack' ), 'https://wordpress.org/plugins/woo-product-bundle/' ),
 		'id'       => 'wcj_multicurrency_compatibility_wpc_product_bundle',
 		'default'  => 'no',
 		'type'     => 'checkbox',
+	),
+	array(
+		'title'             => __( 'WooCommerce Tree Table Rate Shipping', 'woocommerce-jetpack' ),
+		'custom_attributes' => apply_filters( 'booster_message', '', 'disabled' ),
+		'desc'              => empty( $message = apply_filters( 'booster_message', '', 'desc' ) ) ? __( 'Enable', 'woocommerce-jetpack' ) : $message,
+		'desc_tip'          => sprintf( __( 'Adds compatibility with <a href="%s" target="_blank">WooCommerce Tree Table Rate Shipping</a> plugin.', 'woocommerce-jetpack' ), 'https://tablerateshipping.com' ),
+		'id'                => 'wcj_multicurrency_compatibility_wc_ttrs',
+		'default'           => 'no',
+		'type'              => 'checkbox',
+	),
+	array(
+		'title'             => __( 'Flexible Shipping', 'woocommerce-jetpack' ),
+		'custom_attributes' => apply_filters( 'booster_message', '', 'disabled' ),
+		'desc'              => empty( $message = apply_filters( 'booster_message', '', 'desc' ) ) ? __( 'Enable', 'woocommerce-jetpack' ) : $message,
+		'desc_tip'          => sprintf( __( 'Adds compatibility with <a href="%s" target="_blank">Flexible Shipping</a> plugin.', 'woocommerce-jetpack' ), 'https://flexibleshipping.com/' ),
+		'id'                => 'wcj_multicurrency_compatibility_flexible_shipping',
+		'default'           => 'no',
+		'type'              => 'checkbox',
+	),
+	array(
+		'title'             => __( 'Pricing Deals Plugin', 'woocommerce-jetpack' ),
+		'custom_attributes' => apply_filters( 'booster_message', '', 'disabled' ),
+		'desc'              => empty( $message = apply_filters( 'booster_message', '', 'desc' ) ) ? __( 'Enable', 'woocommerce-jetpack' ) : $message,
+		'desc_tip'          => sprintf( __( 'Adds compatibility with <a href="%s" target="_blank">Pricing Deals</a> plugin.', 'woocommerce-jetpack' ), 'https://www.varktech.com/woocommerce/woocommerce-dynamic-pricing-discounts-pro/' ),
+		'id'                => 'wcj_multicurrency_compatibility_pricing_deals',
+		'default'           => 'no',
+		'type'              => 'checkbox',
 	),
 	array(
 		'type'     => 'sectionend',

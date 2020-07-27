@@ -57,15 +57,20 @@ class Ajax
         
         if ( $this->is_admin && isset( $_GET['buttonizer-preview'] ) ) {
             $this->goIntoPreview();
+            // Load page data
+            $this->pageData();
         } else {
             // Show the button without delay
-            if ( isset( $this->settings['no_ajax'] ) && $this->settings['no_ajax'] === "true" ) {
-                wp_localize_script( "buttonizer_frontend_javascript", "buttonizer_data", ( new \Buttonizer\Api\Buttons\ApiButtons() )->get() );
+            
+            if ( isset( $this->settings['no_ajax'] ) && $this->settings['no_ajax'] === true ) {
+                wp_localize_script( "buttonizer_frontend_javascript", "buttonizer_data", ( new \Buttonizer\Api\Buttons\ApiButtons() )->get( true ) );
+            } else {
+                // Load page data
+                $this->pageData();
             }
+        
         }
         
-        // Load page data
-        $this->pageData();
         // Add some information
         wp_localize_script( 'buttonizer_frontend_javascript', 'buttonizer_ajax', [
             'ajaxurl'           => admin_url( 'admin-ajax.php' ),
@@ -181,11 +186,10 @@ class Ajax
         wp_register_script(
             'buttonizer_frontend_javascript',
             plugins_url( '/assets/frontend.min.js?v=' . md5( BUTTONIZER_VERSION ), BUTTONIZER_PLUGIN_DIR ),
-            [ 'jquery' ],
+            [],
             false,
             true
         );
-        // Require Buttonizer CSS
         wp_register_style(
             'buttonizer_frontend_style',
             plugins_url( '/assets/frontend.css', BUTTONIZER_PLUGIN_DIR ) . '?v=' . md5( BUTTONIZER_VERSION ),

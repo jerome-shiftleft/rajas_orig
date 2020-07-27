@@ -3,7 +3,7 @@ Contributors: htplugins, devitemsllc, hasthemes
 Tags: wordpress notification bar,notification,notification bar,offer bar,promotion bar
 Requires at least: 3.1
 Tested up to: 5.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ HashBar is a WordPress Notification / Alert / Offer Bar plugin which allows you 
 
 You can see the plugin demo here : [http://demo.wphash.com/hashbar](http://demo.wphash.com/hashbar)
 
-Pro version is also available : [Check it out now!](https://1.envato.market/jjQE6)
+Pro version is also available : [Check it out now!](https://hasthemes.com/0lx0)
 
 
 ### Video Documentation:
@@ -71,7 +71,7 @@ https://youtu.be/iwl8eTq0Crc
 * Do not show notification after close
 * Mobile device breakpoint
 
-Wanna see the pro version? [Check it out now!](https://1.envato.market/jjQE6)
+Wanna see the pro version? [Check it out now!](https://hasthemes.com/0lx0)
 
 == Need Help? ==
 Is there any feature that you want to get in this plugin? 

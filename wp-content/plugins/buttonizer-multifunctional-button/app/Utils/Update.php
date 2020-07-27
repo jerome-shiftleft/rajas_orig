@@ -35,7 +35,8 @@ class Update
         try {
             $this->registerSettings();
 
-            if((count($this->backupButtons) === 0 || $this->backupButtons === false) && (count($this->backupSchedule) === 0 || $this->backupSchedule === false) && (count($this->backupRules) === 0 || $this->backupRules === false))
+            // If there's no Buttonizer data, new install
+            if(!$this->backupButtons && !$this->backupSchedule && !$this->backupRules)
             {
                 $this->cleanup(true);
                 return; // all OK, new installation :)
@@ -466,18 +467,35 @@ class Update
     {
         $settings = [];
 
-        $settings['migration_version'] = '2.1';
-        $settings['import_icon_library'] = 'true';
+        $settings['migration_version'] = '2.2';
+        $settings['import_icon_library'] = true;
 
         if($newInstall === false) {
             $settings['google_analytics'] = $this->get15GeneralSettings('google_analytics', '');
             $settings['icon_library'] = 'fontawesome';
             $settings['icon_library_version'] = '4.7.0';
-            $settings['welcome'] = 'true';
+            $settings['welcome'] = true;
         }else{
             $settings['google_analytics'] = '';
             $settings['icon_library'] = 'fontawesome';
             $settings['icon_library_version'] = '5.free';
+             // Add default button data
+            update_option('buttonizer_buttons', [
+                [
+                    'data' => [
+                        'name' => __('New group', 'buttonizer-multifunctional-button'), 
+                        'show_mobile' => BUTTONIZER_DEF_MOBILE_VISIBILITY, 
+                        'show_desktop' => BUTTONIZER_DEF_DESKTOP_VISIBILITY,
+                    ],
+                    'buttons' => [
+                        [
+                            'name' => __('New button', 'buttonizer-multifunctional-button'), 
+                            'show_mobile' => BUTTONIZER_DEF_MOBILE_VISIBILITY, 
+                            'show_desktop' => BUTTONIZER_DEF_DESKTOP_VISIBILITY
+                        ]
+                    ]
+                ]
+            ]);
         }
 
         update_option('buttonizer_settings', $settings);
@@ -582,13 +600,6 @@ class Update
                 $group["data"]["icon_size"] = "100";
             }
 
-            if(!empty($group["data"]["advanced_scroll_pixel_percent"]) && $group["data"]["advanced_scroll_pixel_percent"] === "%") {
-                $group["data"]["advanced_scroll_pixel_percent"] = "percent";
-            }
-            if(!empty($group["data"]["advanced_scroll_pixel_percent"]) && $group["data"]["advanced_scroll_pixel_percent"] === "px") {
-                $group["data"]["advanced_scroll_pixel_percent"] = "pixel";
-            }
-
             $buttons = [];
 
             foreach($group["buttons"] as $button) {
@@ -622,7 +633,62 @@ class Update
                 $group["data"][$keys] = false;
             }
 
+            // Since we change how enabling of Exit Intent works on 2.1. Disable if exit intent is disabled
+            if($group["data"]["exit_intent"] === false) {
+                $group["data"]["exit_intent_trigger_leaving_window"] = false;
+                $group["data"]["exit_intent_trigger_inactive"] = false;
+            }
+
             $group["buttons"] = $buttons;
+
+            $groups[] = $group;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * Run update 2.1 to 2.2
+     */
+    public function update21to22()
+    {
+        $this->registerSettings();
+
+        $groups = $this->convertButtons21to22($this->backupButtons);
+
+        // If buttonizer was already published, update published.
+        if(get_option('buttonizer_buttons_published')) {
+            $published = $this->convertButtons21to22(get_option('buttonizer_buttons_published'));
+            update_option('buttonizer_buttons_published', $published);
+        }
+
+        // Get all current settings first
+        $settings = get_option('buttonizer_settings');
+        // Set migration version to 2.2
+        $settings["migration_version"] = "2.2";
+        update_option('buttonizer_settings', $settings);
+
+        // Overwrite new settings
+        update_option('buttonizer_buttons', $groups);
+    }
+
+    /**
+     * Return converted 2.0 button settings to 2.1
+     */
+    private function convertButtons21to22($array) {
+        $groups = [];
+
+        foreach ($array as $group)
+        {
+            // Convert position parameters
+            if(!empty($group["data"]["vertical"])) {
+                if($group["data"]["vertical"] <= 50) $group["data"]["vertical"] = "bottom:" . $group['data']['vertical'] . '%;';
+                if($group["data"]["vertical"] > 50) $group["data"]["vertical"] = "top:" . (100 - $group['data']['vertical']) . '%;';
+            }
+            if(!empty($group["data"]["horizontal"])) {
+                if($group["data"]["horizontal"] <= 50) $group["data"]["horizontal"] = "right:" . $group['data']['horizontal'] . '%;';
+                if($group["data"]["horizontal"] > 50) $group["data"]["horizontal"] = "left:" . (100 - $group['data']['horizontal']) . '%;';
+            }
 
             $groups[] = $group;
         }

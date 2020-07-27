@@ -3,7 +3,7 @@
  * Plugin Name: HashBar - WordPress Notification Bar
  * Plugin URI: http://demo.wphash.com/hashbar/
  * Description: Notification Bar plugin for WordPress
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author:   HT Plugins
  * Author URI:  https://htplugins.com/
  * Text Domain: hashbar
@@ -69,7 +69,7 @@ function hashbar_wpnb_upgrade_popup(){
 	?>
 	<div id="ht_dialog" title="<?php echo esc_attr__( 'Go Premium!', 'hashbar' ); ?>" class="ht_dialog" style="display: none;">
 		<div class="dashicons-before dashicons-warning"></div>
-		<h3><?php esc_html_e( 'Purchase our', 'hashbar' ); ?> <a target="_blank" href="https://1.envato.market/jjQE6"><?php esc_html_e( 'Premium', 'hashbar' ); ?></a> <?php esc_html_e( 'version to unlock this feature!', 'hashbar' ); ?></h3>
+		<h3><?php esc_html_e( 'Purchase our', 'hashbar' ); ?> <a target="_blank" href="https://hasthemes.com/0lx0"><?php esc_html_e( 'Premium', 'hashbar' ); ?></a> <?php esc_html_e( 'version to unlock this feature!', 'hashbar' ); ?></h3>
 	</div>
 	<?php
 }

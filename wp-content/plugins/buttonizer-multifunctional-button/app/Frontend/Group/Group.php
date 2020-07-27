@@ -114,7 +114,7 @@ class Group
     {
         // Only one button? Ignore the group show/schedule/pagerule settings, just show the button.
         // Otherwise you'll get confused why a button doesn't show if it isn't a group
-        if ( $this->totalButtons === 1 ) {
+        if ( $this->totalButtons === 1 && !($this->countDesktop === 0 && $this->countMobile === 0) ) {
             return true;
         }
         // Hide on all devices
@@ -124,7 +124,7 @@ class Group
                 "id"          => $this->getOption( 'id', null ),
                 "name"        => $this->getOption( 'name', "Unnamed" ),
                 "button_type" => "group",
-                "message"     => "The group is hidden on all devices",
+                "message"     => __( 'The group is hidden on all devices', 'buttonizer-multifunctional-button' ),
                 "type"        => "all_devices_hidden",
             ] );
             return;
@@ -140,11 +140,10 @@ class Group
     {
         $data = [
             'name'            => $this->getOption( 'name', "Unnamed group" ),
+            '_id'             => $this->getId(),
             'position'        => [
-            'top'    => 0,
-            'left'   => 0,
-            'bottom' => $this->getNumber( 'vertical', BUTTONIZER_DEF_POSITION_VERTICAL ),
-            'right'  => $this->getNumber( 'horizontal', BUTTONIZER_DEF_POSITION_HORIZONTAL ),
+            'vertical'   => $this->getOption( 'vertical', BUTTONIZER_DEF_POSITION_VERTICAL ),
+            'horizontal' => $this->getOption( 'horizontal', BUTTONIZER_DEF_POSITION_HORIZONTAL ),
         ],
             'styling'         => [
             'menu'   => [
@@ -154,7 +153,7 @@ class Group
             'button' => [
             'color'       => $this->getOption( 'background_color', BUTTONIZER_DEF_BACKGROUND_COLOR ),
             'interaction' => $this->getOption( 'background_color_interaction', BUTTONIZER_DEF_BACKGROUND_COLOR_INTERACTION ),
-            'radius'      => $this->getNumber( 'border_radius', BUTTONIZER_DEF_BORDER_RADIUS ) . "%",
+            'radius'      => $this->getOption( 'border_radius', BUTTONIZER_DEF_BORDER_RADIUS ),
         ],
             'border' => [
             'width'       => $this->getNumber( 'border_size', 0 ),
@@ -167,10 +166,12 @@ class Group
             'size'        => $this->getNumber( 'icon_size', BUTTONIZER_DEF_GROUP_ICON_SIZE ) . "px",
         ],
             'label'  => [
-            'text'       => $this->getOption( 'label_color', '' ),
-            'background' => $this->getOption( 'label_background_color', '' ),
-            'size'       => $this->getNumber( 'label_font_size', BUTTONIZER_DEF_LABEL_FONT_SIZE ) . "px",
-            'radius'     => $this->getNumber( 'label_border_radius', BUTTONIZER_DEF_LABEL_BORDER_RADIUS ) . "px",
+            'text'                   => $this->getOption( 'label_color', BUTTONIZER_DEF_LABEL_COLOR_TEXT ),
+            'text_interaction'       => $this->getOption( 'label_color_interaction', BUTTONIZER_DEF_LABEL_COLOR_TEXT ),
+            'background'             => $this->getOption( 'label_background_color', BUTTONIZER_DEF_LABEL_COLOR_BACKGROUND ),
+            'background_interaction' => $this->getOption( 'label_background_color_interaction', BUTTONIZER_DEF_LABEL_COLOR_BACKGROUND ),
+            'size'                   => $this->getNumber( 'label_font_size', BUTTONIZER_DEF_LABEL_FONT_SIZE ) . "px",
+            'radius'                 => $this->getOption( 'label_border_radius', BUTTONIZER_DEF_LABEL_BORDER_RADIUS ),
         ],
         ],
             'icon'            => [

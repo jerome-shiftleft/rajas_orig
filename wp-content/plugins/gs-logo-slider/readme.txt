@@ -5,7 +5,7 @@ Tags: Best logo slider, client logo slider, easy logo slider, logo slider, logo 
 Requires at least: 4.5
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.8.10
+Stable tag: 1.8.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -229,6 +229,9 @@ Recommended Logo dimension 200px X 200px to add at GS Logo Slider.
 9. GS Logo Slider live!
 
 == Changelog ==
+= version 1.8.11 [24th Jun 2020] =
+* [Updated] : Appsero Client.
+
 = version 1.8.10 [28th Apr 2020] =
 * [Removed] : Admin Notice.
 
@@ -319,6 +322,9 @@ Recommended Logo dimension 200px X 200px to add at GS Logo Slider.
 * Initial release
 
 == Upgrade notice ==
+= version 1.8.11 [24th Jun 2020] =
+* [Updated] : Appsero Client.
+
 = version 1.8.10 [28th Apr 2020] =
 * [Removed] : Admin Notice.
 

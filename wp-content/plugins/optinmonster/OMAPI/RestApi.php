@@ -75,13 +75,13 @@ class OMAPI_RestApi {
 			$this->base->refresh->refresh();
 
 			return new WP_REST_Response(
-				array( 'message' => 'OK'),
+				array( 'message' => esc_html__( 'OK', 'optin-monster-api' ) ),
 				200
 			);
 		}
 
 		return new WP_REST_Response(
-			array( 'message' => 'Could not verify this API Key.'),
+			array( 'message' => esc_html__( 'Could not verify this API Key.', 'optin-monster-api' ) ),
 			401
 		);
 	}

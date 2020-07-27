@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Order</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+  <style type="text/css">
+    body{
+        font-family: 'Kanit', sans-serif;
+        background: rgb(95,27,40);
+        background: linear-gradient(62deg, rgba(95,27,40,1) 0%, rgba(166,39,56,1) 100%);
+        padding:20px 10px;
+    }
+    .section-header{
+        font-size:18px;
+        text-transform: uppercase;
+        font-weight: 400;
+        color:#e5b56d;
+    }
+    .category-row{
+        width:100%;
+        background-color:white;
+        border-radius: 15px;
+        margin-top:18px;
+        height:130px;
+        -webkit-box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.15);
+        -moz-box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.15);
+        box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.15);
+    }
+    .category-text{
+        width:50%;
+        text-align: center;
+        float:left;
+        padding-top:27px;
+        font-size:18px;
+    }
+    .txteng{
+        border-bottom:2px solid #e5b56d;
+        padding-bottom: 7px;
+    }
+    .txtth{
+        margin-top:15px;
+    }
+    .category-image{
+        float:right;
+        width:50%;
+        background: no-repeat center;
+        height:130px;
+        background-size: cover;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    .suit .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/45eba82fd3902c72af2eb6eb0e1633d3.png");
+    }
+    .tuxedo .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/99f34a6f64e29071aa4ec1beacea4310.jpg");
+    }
+    .jacket .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/3857b925668cba6a453686db60800ed9.png");
+    }
+    .trouser .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/3fb978e1c5124d4641e27f31c4cf1ecb.jpg");
+    }
+    .shirt .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/551e249dcf831798f523d81ac76ec493.jpg");
+    }
+    .vest .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/77c59b084392b3a2b1060ae3e6e24462.png");
+    }
+    .jeans .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/243296e4c84138615d5b1cc8a43879b9.jpg");
+    }
+    .chinos .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/ee143c74d571f4dab7f2206c4b75db21.jpg");
+    }
+    .accessories .category-image{
+        background-image: url("https://www.v2.rajasfashions.com/uploads/products/b35b20b797649e572ccf7a05cac460a4.jpg");
+    }
+  </style>
+  </head>
+  <body>
+    <div class="page">
+        <div class="section-header">
+            Select a Category
+        </div>
+        <div class="category-row suit">
+            <div class="category-text">
+                <span class="txteng">Suit</span>
+                <div class="txtth">สูท</div>
+            </div>
+            <div class="category-image">
+            </div>
+        </div>
+        <div class="category-row tuxedo">
+            <div class="category-text">
+                <span class="txteng">Tuxedo</span>
+                <div class="txtth">ทักซิโด้</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row jacket">
+            <div class="category-text">
+                <span class="txteng">Jacket</span>
+                <div class="txtth">แจ็คเก็ต</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row trouser">
+            <div class="category-text">
+                <span class="txteng">Trouser</span>
+                <div class="txtth">กางเกง</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row shirt">
+            <div class="category-text">
+                <span class="txteng">Shirt</span>
+                <div class="txtth">เสื้อเชิ้ต</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row vest">
+            <div class="category-text">
+                <span class="txteng">Vest</span>
+                <div class="txtth">เสื้อกั๊ก</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row jeans">
+            <div class="category-text">
+                <span class="txteng">Jeans</span>
+                <div class="txtth">กางเกงยีนส์</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row chinos">
+            <div class="category-text">
+                <span class="txteng">Chino</span>
+                <div class="txtth">กางเกงชิโน</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+        <div class="category-row accessories">
+            <div class="category-text">
+                <span class="txteng">Accessories</span>
+                <div class="txtth">เครื่องประดับ</div>
+            </div>
+            <div class="category-image">
+
+            </div>
+        </div>
+    </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+   function autorun()
+   {
+    
+   }
+   if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
+   else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
+   else window.onload = autorun;
+  </script>
+  </body>
+</html>

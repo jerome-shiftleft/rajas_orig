@@ -84,7 +84,7 @@ class Button
                 "group_id"    => $this->groupObject->getId(),
                 "name"        => $this->getOption( 'name', "Unnamed" ),
                 "button_type" => "button",
-                "message"     => "The button is hidden on all devices",
+                "message"     => __( 'The button is hidden on all devices', 'buttonizer-multifunctional-button' ),
                 "type"        => "all_devices_hidden",
             ] );
             return false;
@@ -99,29 +99,35 @@ class Button
     public function generate()
     {
         $data = [
-            'name'    => $this->getOption( 'name', 'Unnamed button' ),
-            'action'  => [
+            'name'      => $this->getOption( 'name', 'Unnamed button' ),
+            '_id'       => $this->getOption( 'id', null ),
+            '_group_id' => $this->groupObject->getId(),
+            'action'    => [
             'type'           => $this->getOption( 'type', BUTTONIZER_DEF_BUTTON_ACTION ),
             'action'         => $this->getOption( 'action', '/' ),
             'action_new_tab' => $this->getBoolean( 'action_new_tab', BUTTONIZER_DEF_BUTTON_ACTION_NEW_TAB ),
         ],
-            'icon'    => [
+            'icon'      => [
             'buttonIcon' => $this->getOption( 'icon', BUTTONIZER_DEF_BUTTON_ICON ),
         ],
-            'device'  => [
+            'device'    => [
             'show_mobile'  => $this->getBoolean( 'show_mobile', BUTTONIZER_DEF_MOBILE_VISIBILITY ),
             'show_desktop' => $this->getBoolean( 'show_desktop', BUTTONIZER_DEF_DESKTOP_VISIBILITY ),
         ],
-            'label'   => [
+            'label'     => [
             'label'              => $this->getOption( 'label', '' ),
             'show_label_desktop' => $this->getOption( 'show_label_desktop', BUTTONIZER_DEF_LABEL_VISIBILITY ),
             'show_label_mobile'  => $this->getOption( 'show_label_mobile', BUTTONIZER_DEF_LABEL_VISIBILITY ),
         ],
-            'styling' => [
+            'styling'   => [
             'icon'       => [
             'size' => $this->getNumber( 'icon_size', BUTTONIZER_DEF_BUTTON_ICON_SIZE ) . "px",
         ],
             'main_style' => $this->getBoolean( 'use_main_button_style', BUTTONIZER_DEF_USE_MAIN_BUTTON_STYLE ),
+        ],
+            'text'      => [
+            'subject' => $this->getOption( 'text_subject', '' ),
+            'body'    => $this->getOption( 'text_body', '' ),
         ],
         ];
         // Use own button styling
@@ -131,13 +137,15 @@ class Button
                 'button' => [
                 'color'       => $this->getOption( 'background_color', BUTTONIZER_DEF_BACKGROUND_COLOR ),
                 'interaction' => $this->getOption( 'background_color_interaction', BUTTONIZER_DEF_BACKGROUND_COLOR_INTERACTION ),
-                'radius'      => $this->getNumber( 'border_radius', BUTTONIZER_DEF_BORDER_RADIUS ) . "%",
+                'radius'      => $this->getOption( 'border_radius', BUTTONIZER_DEF_BORDER_RADIUS ),
             ],
                 'label'  => [
-                'text'       => $this->getOption( 'label_color', BUTTONIZER_DEF_LABEL_COLOR_TEXT ),
-                'background' => $this->getOption( 'label_background_color', BUTTONIZER_DEF_LABEL_COLOR_BACKGROUND ),
-                'size'       => $this->getOption( 'label_font_size', BUTTONIZER_DEF_LABEL_FONT_SIZE ) . 'px',
-                'radius'     => $this->getOption( 'label_border_radius', BUTTONIZER_DEF_LABEL_BORDER_RADIUS ) . 'px',
+                'text'                   => $this->getOption( 'label_color', BUTTONIZER_DEF_LABEL_COLOR_TEXT ),
+                'text_interaction'       => $this->getOption( 'label_color_interaction', BUTTONIZER_DEF_LABEL_COLOR_TEXT ),
+                'background'             => $this->getOption( 'label_background_color', BUTTONIZER_DEF_LABEL_COLOR_BACKGROUND ),
+                'background_interaction' => $this->getOption( 'label_background_color_interaction', BUTTONIZER_DEF_LABEL_COLOR_BACKGROUND ),
+                'size'                   => $this->getOption( 'label_font_size', BUTTONIZER_DEF_LABEL_FONT_SIZE ) . 'px',
+                'radius'                 => $this->getOption( 'label_border_radius', BUTTONIZER_DEF_LABEL_BORDER_RADIUS ),
             ],
                 'icon'   => [
                 'color'       => $this->getOption( 'icon_color', BUTTONIZER_DEF_ICON_COLOR ),

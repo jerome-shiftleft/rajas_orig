@@ -104,11 +104,11 @@ class OMAPI_Menu {
 		}
 
 		$this->panels = array(
-			'optins'      => __( 'Campaigns', 'optin-monster-api' ),
-			'api'         => __( 'Authorization', 'optin-monster-api' ),
-			'woocommerce' => __( 'WooCommerce', 'optin-monster-api' ),
-			'support'     => __( 'Support', 'optin-monster-api' ),
-			'migrate'     => __( 'Migration', 'optin-monster-api' ),
+			'optins'      => esc_html__( 'Campaigns', 'optin-monster-api' ),
+			'api'         => esc_html__( 'Authorization', 'optin-monster-api' ),
+			'woocommerce' => esc_html__( 'WooCommerce', 'optin-monster-api' ),
+			'support'     => esc_html__( 'Support', 'optin-monster-api' ),
+			'migrate'     => esc_html__( 'Migration', 'optin-monster-api' ),
 		);
 	}
 
@@ -132,14 +132,17 @@ class OMAPI_Menu {
 	 */
 	public function menu() {
 
+		// Filter to change the menu position if there is any conflict with another menu on the same position.
+		$menu_position = apply_filters( 'optin_monster_api_menu_position', 26 );
+
 		$this->hook = add_menu_page(
-			__( 'OptinMonster', 'optin-monster-api' ),
-			__( 'OptinMonster', 'optin-monster-api' ) . '<span class="om-pulse"></span>',
+			esc_html__( 'OptinMonster', 'optin-monster-api' ),
+			esc_html__( 'OptinMonster', 'optin-monster-api' ) . '<span class="om-pulse"></span>',
 			apply_filters( 'optin_monster_api_menu_cap', 'manage_options', 'optin-monster-api-settings' ),
 			'optin-monster-api-settings',
 			array( $this, 'page' ),
 			'none',
-			579
+			$menu_position
 		);
 
 		// Just add a placeholder secondary page.
@@ -287,8 +290,8 @@ class OMAPI_Menu {
 		add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 		add_filter( 'admin_footer_text', array( $this, 'footer' ) );
-		add_action( 'in_admin_header', array( $this, 'output_plugin_screen_banner') );
-		add_action( 'admin_enqueue_scripts', array( $this, 'fix_plugin_js_conflicts'), 100 );
+		add_action( 'in_admin_header', array( $this, 'output_plugin_screen_banner' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'fix_plugin_js_conflicts' ), 100 );
 
 	}
 
@@ -318,11 +321,27 @@ class OMAPI_Menu {
 		global $wpdb;
 
 		// Posts query.
-		$postTypes = implode( '","', get_post_types( array( 'public' => true ) ) );
-		$posts     = $wpdb->get_results( "SELECT ID AS `id`, post_title AS `text` FROM {$wpdb->prefix}posts WHERE post_type IN (\"{$postTypes}\") AND post_status IN('publish', 'future') ORDER BY post_title ASC", ARRAY_A );
+		$postTypes = array_map( 'esc_sql', get_post_types( array( 'public' => true ) ) );
+		$postTypes = implode( "','", $postTypes );
+
+		$sql = "
+		SELECT ID AS `id`, post_title AS `text`
+		FROM $wpdb->posts
+		WHERE post_type IN ( '{$postTypes}' )
+		AND post_status IN ('publish','future')
+		ORDER BY post_title ASC
+		";
+		$posts = $wpdb->get_results( $sql, ARRAY_A );
 
 		// Taxonomies query.
-		$tags = $wpdb->get_results( "SELECT terms.term_id AS 'id', terms.name AS 'text' FROM {$wpdb->prefix}term_taxonomy tax  LEFT JOIN {$wpdb->prefix}terms terms ON terms.term_id = tax.term_id WHERE tax.taxonomy = 'post_tag' ORDER BY text ASC", ARRAY_A );
+		$sql = "
+		SELECT terms.term_id AS 'id', terms.name AS 'text'
+		FROM {$wpdb->term_taxonomy} tax
+		LEFT JOIN {$wpdb->terms} terms ON terms.term_id = tax.term_id
+		WHERE tax.taxonomy = 'post_tag'
+		ORDER BY text ASC
+		";
+		$tags = $wpdb->get_results( $sql, ARRAY_A );
 
 		wp_register_script( $this->base->plugin_slug . '-select2', plugins_url( '/assets/js/select2.min.js', OMAPI_FILE ), array( 'jquery' ), $this->base->version, true );
 		wp_enqueue_script( $this->base->plugin_slug . '-select2' );
@@ -345,7 +364,7 @@ class OMAPI_Menu {
 			array(
 				'ajax'        => admin_url( 'admin-ajax.php' ),
 				'nonce'       => wp_create_nonce( 'omapi-query-nonce' ),
-				'confirm'     => __( 'Are you sure you want to reset these settings?', 'optin-monster-api' ),
+				'confirm'     => esc_html__( 'Are you sure you want to reset these settings?', 'optin-monster-api' ),
 				'date_format' => 'F j, Y',
 				'supportData' => $this->get_support_data(),
 			)
@@ -386,7 +405,7 @@ class OMAPI_Menu {
 		$server_data = '';
 		$optin_data = '';
 
-		if ( isset($_GET['optin_monster_api_view']) && $_GET['optin_monster_api_view'] == 'support') {
+		if ( isset( $_GET['optin_monster_api_view'] ) && 'support' === $_GET['optin_monster_api_view'] ) {
 			$optin_data = $this->get_optin_data();
 			$server_data = $this->get_server_data();
 		}
@@ -429,7 +448,7 @@ class OMAPI_Menu {
 					'Shortcodes Synced and Recognized' => get_post_meta( $optin->ID, '_omapi_shortcode', true ) ? htmlspecialchars_decode( get_post_meta( $optin->ID, '_omapi_shortcode_output', true ) ) : 'None recognized',
 				);
 				if ( OMAPI_Utils::is_inline_type( $design_type ) ) {
-					$optin_data[$slug]['Automatic Output Status'] = get_post_meta( $optin->ID, '_omapi_automatic', true ) ? 'Enabled' : 'Disabled';
+					$optin_data[$slug][ 'Automatic Output Status' ] = get_post_meta( $optin->ID, '_omapi_automatic', true ) ? 'Enabled' : 'Disabled';
 				}
 
 			}
@@ -473,7 +492,6 @@ class OMAPI_Menu {
 			'API Ping Response'  => wp_remote_retrieve_response_code( $api_ping ),
 			'Active Theme'       => $theme,
 			'Active Plugins'     => $used_plugins,
-
 		);
 
 		return $array;
@@ -601,21 +619,23 @@ class OMAPI_Menu {
 			case 'api' :
 				switch ( $setting ) {
 					case 'user' :
-						$ret = $this->get_password_field( $setting, $value, $id, __( 'Legacy API Username', 'optin-monster-api' ), __( 'The Legacy API Username found in your OptinMonster Account API area.', 'optin-monster-api' ), __( 'Enter your Legacy API Username here...', 'optin-monster-api' ) );
+						$ret = $this->get_password_field( $setting, $value, $id, esc_html__( 'Legacy API Username', 'optin-monster-api' ), esc_html__( 'The Legacy API Username found in your OptinMonster Account API area.', 'optin-monster-api' ), esc_html__( 'Enter your Legacy API Username here...', 'optin-monster-api' ) );
 					break 2;
 
 					case 'key' :
-						$ret = $this->get_password_field( $setting, $value, $id, __( 'Legacy API Key', 'optin-monster-api' ), __( 'The Legacy API Key found in your OptinMonster Account API area.', 'optin-monster-api' ), __( 'Enter your Legacy API Key here...', 'optin-monster-api' ) );
+						$ret = $this->get_password_field( $setting, $value, $id, esc_html__( 'Legacy API Key', 'optin-monster-api' ), esc_html__( 'The Legacy API Key found in your OptinMonster Account API area.', 'optin-monster-api' ), esc_html__( 'Enter your Legacy API Key here...', 'optin-monster-api' ) );
 					break 2;
 
 					case 'apikey' :
-						$ret = $this->get_api_field( $setting, $value, 'omapiAuthorizeButton', __( 'Authorize OptinMonster', 'optin-monster-api'), sprintf( __( 'Click to connect your OptinMonster Account, or %s click here to enter an API Key Manually.%s', 'optin-monster-api'), '<a href="#" id="omapiShowApiKey">', '</a>' ) );
-						$ret .= $this->get_password_field( $setting, $value, $id, __( 'API Key', 'optin-monster-api'), __( 'A single API Key found in your OptinMonster Account API area.', 'optin-monster-api'), __( 'Enter your API Key here...', 'optin-monster-api'), array(), true );
+						$ret = $this->get_api_field( $setting, $value, 'omapiAuthorizeButton', esc_html__( 'Authorize OptinMonster', 'optin-monster-api' ), sprintf( esc_html__( 'Click to connect your OptinMonster Account, or %s click here to enter an API Key Manually.%s', 'optin-monster-api' ), '<a href="#" id="omapiShowApiKey">', '</a>' ) );
+						$ret .= $this->get_password_field( $setting, $value, $id, esc_html__( 'API Key', 'optin-monster-api' ), esc_html__( 'A single API Key found in your OptinMonster Account API area.', 'optin-monster-api' ), esc_html__( 'Enter your API Key here...', 'optin-monster-api' ), array(), true );
 						add_filter( 'omapi_hide_submit_buttom', '__return_true' );
 					break 2;
 
 					case 'omwpdebug' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Debugging Rules', 'optin-monster-api' ), __( 'Allow logged-out/non-admin debugging of plugin rules with the <code>omwpdebug</code> query variable?', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Debugging Rules', 'optin-monster-api' ), __( 'Allow logged-out/non-admin debugging of plugin rules with the <code>omwpdebug</code> query variable?', 'optin-monster-api' ) );
+					break 2;
+					default:
 					break 2;
 				}
 			break;
@@ -623,7 +643,9 @@ class OMAPI_Menu {
 			case 'settings' :
 				switch ( $setting ) {
 					case 'cookies' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Clear local cookies on campaign update?', 'optin-monster-api' ), __( 'If checked, local cookies will be cleared for all campaigns after campaign settings are adjusted and saved.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Clear local cookies on campaign update?', 'optin-monster-api' ), esc_html__( 'If checked, local cookies will be cleared for all campaigns after campaign settings are adjusted and saved.', 'optin-monster-api' ) );
+					break 2;
+					default:
 					break 2;
 				}
 			break;
@@ -632,6 +654,8 @@ class OMAPI_Menu {
 				switch ( $setting ) {
 					case 'settings' :
 						$ret = $this->get_woocommerce();
+					break 2;
+					default:
 					break 2;
 				}
 			break;
@@ -643,40 +667,44 @@ class OMAPI_Menu {
 						break 2;
 
 					case 'links' :
-						$ret = $this->get_support_links( $setting, 'Helpful Links' );
+						$ret = $this->get_support_links( $setting, esc_html__( 'Helpful Links', 'optin-monster-api' ) );
 						break 2;
 
 					case 'server-report';
-						$ret = $this->get_plugin_report($setting, 'Server / Plugin Report');
+						$ret = $this->get_plugin_report( $setting, esc_html__( 'Server / Plugin Report', 'optin-monster-api' ) );
 						break 2;
+					default:
+					break 2;
 				}
 				break;
 
 			case 'toggle' :
 				switch ( $setting ) {
 					case 'advanced-start' :
-						$ret = $this->get_toggle_start( $setting, __( 'Advanced Settings', 'optin-monster-api'), __('More specific settings available for campaign visibility.', 'optin-monster-api') );
+						$ret = $this->get_toggle_start( $setting, esc_html__( 'Advanced Settings', 'optin-monster-api' ), esc_html__( 'More specific settings available for campaign visibility.', 'optin-monster-api' ) );
 					break 2;
 					case 'advanced-end' :
 						$ret = $this->get_toggle_end();
 					break 2;
 					case 'woocommerce-start' :
-						$ret = $this->get_toggle_start( $setting, __( 'WooCommerce Settings', 'optin-monster-api'), __('More specific settings available for WooCommerce integration.', 'optin-monster-api') );
+						$ret = $this->get_toggle_start( $setting, esc_html__( 'WooCommerce Settings', 'optin-monster-api' ), esc_html__( 'More specific settings available for WooCommerce integration.', 'optin-monster-api' ) );
 						break 2;
 					case 'woocommerce-end' :
 						$ret = $this->get_toggle_end();
 						break 2;
+					default:
+					break 2;
 				}
 			break;
 
 			case 'optins' :
 				switch ( $setting ) {
 					case 'enabled' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Enable campaign on site?', 'optin-monster-api' ), __( 'The campaign will not be displayed on this site unless this setting is checked.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Enable campaign on site?', 'optin-monster-api' ), esc_html__( 'The campaign will not be displayed on this site unless this setting is checked.', 'optin-monster-api' ) );
 					break 2;
 
 					case 'automatic' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Display the campaign automatically after blog posts', 'optin-monster-api' ), sprintf( __( 'If no advanced settings are selected below, the campaign will display after every post. You can turn this off and add it manually to your posts by <a href="%s" target="_blank" rel="noopener">clicking here and viewing the tutorial.</a>', 'optin-monster-api' ), 'https://optinmonster.com/docs/how-to-manually-add-an-after-post-or-inline-optin/' ), array('omapi-after-post-auto-select') );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Display the campaign automatically after blog posts', 'optin-monster-api' ), sprintf( __( 'If no advanced settings are selected below, the campaign will display after every post. You can turn this off and add it manually to your posts by <a href="%s" target="_blank" rel="noopener">clicking here and viewing the tutorial.</a>', 'optin-monster-api' ), 'https://optinmonster.com/docs/how-to-manually-add-an-after-post-or-inline-optin/' ), array( 'omapi-after-post-auto-select' ) );
 					break 2;
 					case 'automatic_shortcode' :
 						$full_shortcode ='[optin-monster-shortcode id="'. $optin->post_name .'"]';
@@ -684,7 +712,7 @@ class OMAPI_Menu {
 							$setting,
 							$full_shortcode,
 							$id,
-							__( 'Shortcode for this campaign', 'optin-monster-api' ),
+							esc_html__( 'Shortcode for this campaign', 'optin-monster-api' ),
 							sprintf( __( 'Use the shortcode to manually add this campaign to inline to a post or page. <a href="%s" title="Click here to learn more about how this work" target="_blank" rel="noopener">Click here to learn more about how this works.</a>', 'optin-monster-api' ), 'https://optinmonster.com/docs/how-to-manually-add-an-after-post-or-inline-optin/' ),
 							false,
 							array(),
@@ -693,17 +721,17 @@ class OMAPI_Menu {
 					break 2;
 
 					case 'users' :
-						$ret = $this->get_dropdown_field( $setting, $value, $id, $this->get_user_output(), __( 'Who should see this campaign?', 'optin-monster-api' ), sprintf( __( 'Determines who should be able to view this campaign. Want to hide for newsletter subscribers? <a href="%s" target="_blank" rel="noopener">Click here to learn how.</a>', 'optin-monster-api' ), 'https://optinmonster.com/docs/how-to-hide-optinmonster-from-existing-newsletter-subscribers/' ) );
+						$ret = $this->get_dropdown_field( $setting, $value, $id, $this->get_user_output(), esc_html__( 'Who should see this campaign?', 'optin-monster-api' ), sprintf( __( 'Determines who should be able to view this campaign. Want to hide for newsletter subscribers? <a href="%s" target="_blank" rel="noopener">Click here to learn how.</a>', 'optin-monster-api' ), 'https://optinmonster.com/docs/how-to-hide-optinmonster-from-existing-newsletter-subscribers/' ) );
 					break 2;
 
 					case 'never' :
 						$val = is_array( $value ) ? implode( ',', $value ) : $value;
-						$ret = $this->get_custom_field( $setting, '<input type="hidden" value="' . $val . '" id="omapi-field-' . $setting . '" class="omapi-select" name="omapi[' . $id . '][' . $setting . ']" data-placeholder="' . esc_attr__( 'Type to search and select post(s)...', 'optin-monster-api' ) . '">', __( 'Never load campaign on:', 'optin-monster-api' ), __( 'Never loads the campaign on the selected posts and/or pages. Does not disable automatic Global output.', 'optin-monster-api' ) );
+						$ret = $this->get_custom_field( $setting, '<input type="hidden" value="' . esc_attr( $val ) . '" id="omapi-field-' . $setting . '" class="omapi-select" name="omapi[' . $id . '][' . $setting . ']" data-placeholder="' . esc_attr__( 'Type to search and select post(s)...', 'optin-monster-api' ) . '">', esc_html__( 'Never load campaign on:', 'optin-monster-api' ), esc_html__( 'Never loads the campaign on the selected posts and/or pages. Does not disable automatic Global output.', 'optin-monster-api' ) );
 					break 2;
 
 					case 'only' :
 						$val = is_array( $value ) ? implode( ',', $value ) : $value;
-						$ret = $this->get_custom_field( $setting, '<input type="hidden" value="' . $val . '" id="omapi-field-' . $setting . '" class="omapi-select" name="omapi[' . $id . '][' . $setting . ']" data-placeholder="' . esc_attr__( 'Type to search and select post(s)...', 'optin-monster-api' ) . '">', __( 'Load campaign specifically on:', 'optin-monster-api' ), __( 'Loads the campaign on the selected posts and/or pages.', 'optin-monster-api' ) );
+						$ret = $this->get_custom_field( $setting, '<input type="hidden" value="' . esc_attr( $val ) . '" id="omapi-field-' . $setting . '" class="omapi-select" name="omapi[' . $id . '][' . $setting . ']" data-placeholder="' . esc_attr__( 'Type to search and select post(s)...', 'optin-monster-api' ) . '">', esc_html__( 'Load campaign specifically on:', 'optin-monster-api' ), esc_html__( 'Loads the campaign on the selected posts and/or pages.', 'optin-monster-api' ) );
 					break 2;
 
 					case 'categories' :
@@ -712,7 +740,7 @@ class OMAPI_Menu {
 							ob_start();
 							wp_category_checklist( 0, 0, (array) $value, false, null, true );
 							$cats = ob_get_clean();
-							$ret  = $this->get_custom_field( 'categories', $cats, __( 'Load campaign on post categories:', 'optin-monster-api' ) );
+							$ret  = $this->get_custom_field( 'categories', $cats, esc_html__( 'Load campaign on post categories:', 'optin-monster-api' ) );
 						}
 					break;
 
@@ -725,7 +753,7 @@ class OMAPI_Menu {
 							if ( $tag_terms ) {
 								$display = (array) $value;
 								$display = isset( $display['post_tag'] ) ? implode( ',', $display['post_tag'] ) : '';
-								$html    = $this->get_custom_field( $setting, '<input type="hidden" value="' . $display . '" id="omapi-field-' . $setting . '" class="omapi-select" name="tax_input[post_tag][]" data-placeholder="' . esc_attr__( 'Type to search and select post tag(s)...', 'optin-monster-api' ) . '">', __( 'Load campaign on post tags:', 'optin-monster-api' ), __( 'Loads the campaign on the selected post tags.', 'optin-monster-api' ) );
+								$html    = $this->get_custom_field( $setting, '<input type="hidden" value="' . esc_attr( $display ) . '" id="omapi-field-' . $setting . '" class="omapi-select" name="tax_input[post_tag][]" data-placeholder="' . esc_attr__( 'Type to search and select post tag(s)...', 'optin-monster-api' ) . '">', esc_html__( 'Load campaign on post tags:', 'optin-monster-api' ), esc_html__( 'Loads the campaign on the selected post tags.', 'optin-monster-api' ) );
 							}
 						}
 
@@ -756,7 +784,7 @@ class OMAPI_Menu {
 									wp_terms_checklist( 0, $args );
 									$output = ob_get_clean();
 									if ( ! empty( $output ) ) {
-										$data[ $taxonomy ] = $this->get_custom_field( 'taxonomies', $output, __( 'Load campaign on ' . strtolower( $tax->labels->name ) . ':', 'optin-monster-api' ) );
+										$data[ $taxonomy ] = $this->get_custom_field( 'taxonomies', $output, esc_html__( 'Load campaign on ', 'optin-monster-api' ) . strtolower( $tax->labels->name ) . ':' );
 									}
 								}
 							}
@@ -774,75 +802,85 @@ class OMAPI_Menu {
 					break;
 
 					case 'show' :
-						$ret = $this->get_custom_field( 'show', $this->get_show_fields( $value ), __( 'Load campaign on post types and archives:', 'optin-monster-api' ) );
+						$ret = $this->get_custom_field( 'show', $this->get_show_fields( $value ), esc_html__( 'Load campaign on post types and archives:', 'optin-monster-api' ) );
 					break;
 
 					case 'mailpoet' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Save lead to MailPoet?', 'optin-monster-api' ), __( 'If checked, successful campaign leads will be saved to MailPoet.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Save lead to MailPoet?', 'optin-monster-api' ), esc_html__( 'If checked, successful campaign leads will be saved to MailPoet.', 'optin-monster-api' ) );
 					break 2;
 
 					case 'mailpoet_list' :
-						$ret = $this->get_dropdown_field( $setting, $value, $id, $this->get_mailpoet_lists(), __( 'Add lead to this MailPoet list:', 'optin-monster-api' ), __( 'All successful leads for the campaign will be added to this particular MailPoet list.', 'optin-monster-api' ) );
+						$ret = $this->get_dropdown_field( $setting, $value, $id, $this->get_mailpoet_lists(), esc_html__( 'Add lead to this MailPoet list:', 'optin-monster-api' ), esc_html__( 'All successful leads for the campaign will be added to this particular MailPoet list.', 'optin-monster-api' ) );
+					break 2;
+
+					case 'mailpoet_use_phone':
+						$phone_field = get_post_meta( $optin_id, '_omapi_mailpoet_phone_field', true );
+
+						$ret = $this->get_checkbox_field( $setting, ! empty( $phone_field ), $id, esc_html__( 'Save phone number to MailPoet?', 'optin-monster-api' ), esc_html__( 'If checked, Phone number will be saved in Mailpoet.', 'optin-monster-api' ) );
+					break 2;
+
+					case 'mailpoet_phone_field' :
+						$ret .= $this->get_dropdown_field( $setting, $value, $id, $this->get_mailpoet_custom_fields(), esc_html__( 'Select the custom field for phone:', 'optin-monster-api' ), esc_html__( 'If you have a custom field for phone numbers, select the field here.', 'optin-monster-api' ) );
 					break 2;
 
 					// Start WooCommerce settings.
 					case 'show_on_woocommerce' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on all WooCommerce pages', 'optin-monster-api' ), __( 'The campaign will show on any page where WooCommerce templates are used.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on all WooCommerce pages', 'optin-monster-api' ), esc_html__( 'The campaign will show on any page where WooCommerce templates are used.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_shop' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce shop', 'optin-monster-api' ), __( 'The campaign will show on the product archive page (shop).', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce shop', 'optin-monster-api' ), esc_html__( 'The campaign will show on the product archive page (shop).', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_product' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce products', 'optin-monster-api' ), __( 'The campaign will show on any single product.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce products', 'optin-monster-api' ), esc_html__( 'The campaign will show on any single product.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_cart' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Cart', 'optin-monster-api' ), __( 'The campaign will show on the cart page.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Cart', 'optin-monster-api' ), esc_html__( 'The campaign will show on the cart page.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_checkout' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Checkout', 'optin-monster-api' ), __( 'The campaign will show on the checkout page.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Checkout', 'optin-monster-api' ), esc_html__( 'The campaign will show on the checkout page.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_account' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Customer Account', 'optin-monster-api' ), __( 'The campaign will show on the WooCommerce customer account pages.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Customer Account', 'optin-monster-api' ), esc_html__( 'The campaign will show on the WooCommerce customer account pages.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on all WooCommerce Endpoints', 'optin-monster-api' ), __( 'The campaign will show when on any WooCommerce Endpoint.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on all WooCommerce Endpoints', 'optin-monster-api' ), esc_html__( 'The campaign will show when on any WooCommerce Endpoint.', 'optin-monster-api' ) );
 						break 2;
 					case 'is_wc_endpoint_order_pay' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Order Pay endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for order pay is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Order Pay endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for order pay is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_order_received' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Order Received endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for order received is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Order Received endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for order received is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_view_order' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce View Order endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for view order is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce View Order endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for view order is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_edit_account' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Edit Account endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for edit account is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Edit Account endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for edit account is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_edit_address' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Edit Address endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for edit address is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Edit Address endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for edit address is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_lost_password' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Lost Password endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for lost password is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Lost Password endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for lost password is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_customer_logout' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Customer Logout endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for customer logout is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Customer Logout endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for customer logout is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_endpoint_add_payment_method' :
-						$ret = $this->get_checkbox_field( $setting, $value, $id, __( 'Show on WooCommerce Add Payment Method endpoint', 'optin-monster-api' ), __( 'The campaign will show when the endpoint page for add payment method is displayed.', 'optin-monster-api' ) );
+						$ret = $this->get_checkbox_field( $setting, $value, $id, esc_html__( 'Show on WooCommerce Add Payment Method endpoint', 'optin-monster-api' ), esc_html__( 'The campaign will show when the endpoint page for add payment method is displayed.', 'optin-monster-api' ) );
 						break 2;
 
 					case 'is_wc_product_category' :
@@ -862,7 +900,7 @@ class OMAPI_Menu {
 							wp_terms_checklist( 0, $args );
 							$output = ob_get_clean();
 							if ( ! empty( $output ) ) {
-								$ret = $this->get_custom_field( $setting, $output, __( 'Show on WooCommerce Product Categories:', 'optin-monster-api' ) );
+								$ret = $this->get_custom_field( $setting, $output, esc_html__( 'Show on WooCommerce Product Categories:', 'optin-monster-api' ) );
 							}
 						}
 						break 2;
@@ -884,19 +922,25 @@ class OMAPI_Menu {
 							wp_terms_checklist( 0, $args );
 							$output = ob_get_clean();
 							if ( ! empty( $output ) ) {
-								$ret = $this->get_custom_field( $setting, $output, __( 'Show on WooCommerce Product Tags:', 'optin-monster-api' ) );
+								$ret = $this->get_custom_field( $setting, $output, esc_html__( 'Show on WooCommerce Product Tags:', 'optin-monster-api' ) );
 							}
 						}
 						break 2;
 
+					default:
+					break 2;
 				}
 			break;
 			case 'note' :
 				switch ( $setting ) {
 					case 'sidebar_widget_notice' :
-						$ret = $this->get_optin_type_note( $setting, __('Use Widgets to set Sidebar output', 'optin-monster-api'), __('You can set this campaign to show in your sidebars using the OptinMonster widget within your sidebars.', 'optin-monster-api'), 'widgets.php', __('Go to Widgets', 'optin-monster-api') );
+						$ret = $this->get_optin_type_note( $setting, esc_html__( 'Use Widgets to set Sidebar output', 'optin-monster-api' ), esc_html__( 'You can set this campaign to show in your sidebars using the OptinMonster widget within your sidebars.', 'optin-monster-api' ), 'widgets.php', esc_html__( 'Go to Widgets', 'optin-monster-api' ) );
+					break 2;
+					default:
 					break 2;
 				}
+			break;
+			default:
 			break;
 		}
 
@@ -917,15 +961,15 @@ class OMAPI_Menu {
 		return apply_filters( 'optin_monster_api_user_output',
 			array(
 				array(
-					'name'  => __( 'Show campaign to all visitors and users', 'optin-monster-api' ),
+					'name'  => esc_html__( 'Show campaign to all visitors and users', 'optin-monster-api' ),
 					'value' => 'all'
 				),
 				array(
-					'name'  => __( 'Show campaign to only visitors (not logged-in)', 'optin-monster-api' ),
+					'name'  => esc_html__( 'Show campaign to only visitors (not logged-in)', 'optin-monster-api' ),
 					'value' => 'out'
 				),
 				array(
-					'name'  => __( 'Show campaign to only users (logged-in)', 'optin-monster-api' ),
+					'name'  => esc_html__( 'Show campaign to only users (logged-in)', 'optin-monster-api' ),
 					'value' => 'in'
 				)
 			)
@@ -950,7 +994,7 @@ class OMAPI_Menu {
 
 		// Get lists. Check for MailPoet 3 first. Default to legacy.
 		if ( class_exists( '\\MailPoet\\Config\\Initializer' ) ) {
-			$lists = \MailPoet\API\API::MP('v1')->getLists();
+			$lists = \MailPoet\API\API::MP( 'v1' )->getLists();
 		} else {
 			$mailpoet  = WYSIJA::get( 'list', 'model' );
 			$lists     = $mailpoet->get( array( 'name', 'list_id' ), array( 'is_enabled' => 1 ) );
@@ -959,8 +1003,8 @@ class OMAPI_Menu {
 
 		// Add default option.
 		$ret[]    = array(
-			'name'  => __( 'Select your MailPoet list...', 'optin-monster-api' ),
-			'value' => 'none'
+			'name'  => esc_html__( 'Select your MailPoet list...', 'optin-monster-api' ),
+			'value' => 'none',
 		);
 
 		// Loop through the list data and add to array.
@@ -984,6 +1028,54 @@ class OMAPI_Menu {
 	}
 
 	/**
+	 * Returns the available MailPoet custom fields.
+	 *
+	 * @since 1.9.8
+	 *
+	 * @return array An array of MailPoet custom fields.
+	 */
+	public function get_mailpoet_custom_fields() {
+		// Prepare variables.
+		$custom_fields  = array();
+		$ret       		= array();
+		$default_fields	= array( 'email', 'first_name', 'last_name' );
+
+		// Get lists. Check for MailPoet 3.
+		if ( class_exists( '\\MailPoet\\Config\\Initializer' ) ) {
+			$custom_fields = \MailPoet\API\API::MP( 'v1' )->getSubscriberFields();
+		}
+
+		// Add default option.
+		$ret[]    = array(
+			'name'  => esc_html__( 'Select the phone number field...', 'optin-monster-api' ),
+			'value' => '',
+		);
+
+		// Loop through the list data and add to array.
+		foreach ( (array) $custom_fields as $custom_field ) {
+			if ( in_array( $custom_field['id'], $default_fields ) ) {
+			    continue;
+			}
+
+			$ret[] = array(
+				'name'  => $custom_field['name'],
+				'value' => $custom_field['id'],
+			);
+		}
+
+		/**
+		 * Filters the MailPoet custom fields.
+		 *
+		 *
+		 * @param array. $ret           The MailPoet custom fields array, except
+		 *                              first name, last name and email
+		 * @param array. $custom_fields The raw MailPoet custom fields array.
+		 *                              Format differs by plugin verison.
+		 */
+		return apply_filters( 'optin_monster_api_mailpoet_custom_fields', $ret, $custom_fields );
+	}
+
+	/**
 	 * Retrieves the UI output for the single posts show setting.
 	 *
 	 * @since 2.0.0
@@ -997,13 +1089,13 @@ class OMAPI_Menu {
 		$this->tabindex++;
 
 		$output  = '<label for="omapi-field-show-index" class="omapi-custom-label">';
-		$output .= '<input type="checkbox" id="omapi-field-show-index" name="omapi[optins][show][]" value="index"' . checked( in_array( 'index', (array) $value ), 1, false ) . ' /> ' . __( 'Front Page and Search Pages', 'optin-monster-api' ) . '</label><br />';
+		$output .= '<input type="checkbox" id="omapi-field-show-index" name="omapi[optins][show][]" value="index"' . checked( in_array( 'index', (array) $value ), 1, false ) . ' /> ' . esc_html__( 'Front Page and Search Pages', 'optin-monster-api' ) . '</label><br />';
 		$post_types = get_post_types( array( 'public' => true ) );
 		foreach ( (array) $post_types as $show ) {
 			$pt_object = get_post_type_object( $show );
 			$label     = $pt_object->labels->name;
 			$output   .= '<label for="omapi-field-show-' . esc_html( strtolower( $label ) ) . '" class="omapi-custom-label">';
-			$output   .= '<input type="checkbox" id="omapi-field-show-' . esc_html( strtolower( $label ) ) . '" name="omapi[optins][show][]" tabindex="' . $this->tabindex . '" value="' . $show . '"' . checked( in_array( $show, (array) $value ), 1, false ) . ' /> ' . esc_html( $label ) . '</label><br />';
+			$output   .= '<input type="checkbox" id="omapi-field-show-' . esc_html( strtolower( $label ) ) . '" name="omapi[optins][show][]" tabindex="' . $this->tabindex . '" value="' . esc_attr( $show ) . '"' . checked( in_array( $show, (array) $value ), 1, false ) . ' /> ' . esc_html( $label ) . '</label><br />';
 
 			// Increment the global tabindex counter and iterator.
 			$this->tabindex++;
@@ -1080,7 +1172,7 @@ class OMAPI_Menu {
 		// Build the HTML.
 		$field  = '<div class="omapi-field-box omapi-password-field omapi-field-box-' . $setting . ' omapi-clear '. $hidden_class . '">';
 			$field .= '<p class="omapi-field-wrap"><label for="omapi-field-' . $setting . '">' . $label . '</label><br />';
-				$field .= '<input type="password" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . $value . '"' . ( $place ? ' placeholder="' . $place . '"' : '' ) . ' />';
+				$field .= '<input type="password" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . esc_attr( $value ) . '"' . ( $place ? ' placeholder="' . $place . '"' : '' ) . ' />';
 				if ( $desc ) {
 					$field .= '<br /><label for="omapi-field-' . $setting . '"><span class="omapi-field-desc">' . $desc . '</span></label>';
 				}
@@ -1118,7 +1210,7 @@ class OMAPI_Menu {
 						$field .= '<br /><label for="omapi-field-' . $setting . '"><span class="omapi-field-desc">' . $desc . '</span></label>';
 					}
 				} else {
-					$field .= '<p>Your account is <strong>connected.</strong></p><button id="omapiDisconnectButton" class="button button-omapi-gray button-hero">Disconnect</button>';
+					$field .= '<p>' . __( 'Your account is <strong>connected.</strong>', 'optin-monster-api' ) . '</p><button id="omapiDisconnectButton" class="button button-omapi-gray button-hero">' . esc_html__( 'Disconnect', 'optin-monster-api' ) . '</button>';
 				}
 
 			$field .= '</p>';
@@ -1147,7 +1239,7 @@ class OMAPI_Menu {
 
 		// Build the HTML.
 		$field  = '<div class="omapi-field-box omapi-hidden-field omapi-field-box-' . $setting . ' omapi-clear omapi-hidden">';
-		$field .= '<input type="hidden" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . $value . '" />';
+		$field .= '<input type="hidden" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . esc_attr( $value ) . '" />';
 		$field .= '</div>';
 
 		// Return the HTML.
@@ -1209,7 +1301,7 @@ class OMAPI_Menu {
 		// Build the HTML.
 		$field  = '<div class="omapi-field-box omapi-checkbox-field omapi-field-box-' . $setting . ' omapi-clear">';
 			$field .= '<p class="omapi-field-wrap"><label for="omapi-field-' . $setting . '">' . $label . '</label><br />';
-				$field .= '<input type="checkbox" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . $value . '"' . checked( $value, 1, false ) . ' /> ';
+				$field .= '<input type="checkbox" id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '" value="' . esc_attr( $value ) . '"' . checked( $value, 1, false ) . ' /> ';
 				if ( $desc ) {
 					$field .= '<label for="omapi-field-' . $setting . '"><span class="omapi-field-desc">' . $desc . '</span></label>';
 				}
@@ -1245,7 +1337,7 @@ class OMAPI_Menu {
 			$field .= '<p class="omapi-field-wrap"><label for="omapi-field-' . $setting . '">' . $label . '</label><br />';
 				$field .= '<select id="omapi-field-' . $setting . '" class="' . implode( ' ', (array) $classes ) . '" name="omapi[' . $id . '][' . $setting . ']" tabindex="' . $this->tabindex . '">';
 				foreach ( $data as $i => $info ) {
-					$field .= '<option value="' . $info['value'] . '"' . selected( $info['value'], $value, false ) . '>' . $info['name'] . '</option>';
+					$field .= '<option value="' . esc_attr( $info['value'] ) . '"' . selected( $info['value'], $value, false ) . '>' . $info['name'] . '</option>';
 				}
 				$field .= '</select>';
 				if ( $desc ) {
@@ -1365,9 +1457,9 @@ class OMAPI_Menu {
 		$field ='';
 
 		$field .= '<div class="omapi-support-links ' . $setting . '"><h3>' . $title . '</h3><ul>';
-		$field .= '<li><a target="_blank" rel="noopener" href="' . esc_url( 'https://optinmonster.com/docs/' ) . '">'. __('Documentation','optin-monster-api') . '</a></li>';
-		$field .= '<li><a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://wordpress.org/plugins/optinmonster/changelog/' ) . '">'. __('Changelog','optin-monster-api') . '</a></li>';
-		$field .= '<li><a target="_blank" rel="noopener" href="' . esc_url( OPTINMONSTER_APP_URL . '/account/support/' ) . '">'. __('Create a Support Ticket','optin-monster-api') . '</a></li>';
+		$field .= '<li><a target="_blank" rel="noopener" href="' . esc_url( 'https://optinmonster.com/docs/' ) . '">'. esc_html__( 'Documentation', 'optin-monster-api' ) . '</a></li>';
+		$field .= '<li><a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://wordpress.org/plugins/optinmonster/changelog/' ) . '">'. esc_html__( 'Changelog', 'optin-monster-api' ) . '</a></li>';
+		$field .= '<li><a target="_blank" rel="noopener" href="' . esc_url( OPTINMONSTER_APP_URL . '/account/support/' ) . '">'. esc_html__( 'Create a Support Ticket', 'optin-monster-api' ) . '</a></li>';
 		$field .= '</ul></div>';
 
 		return apply_filters( 'optin_monster_api_support_links', $field, $setting);
@@ -1380,7 +1472,7 @@ class OMAPI_Menu {
 		$field .= '<div class="omapi-support-data ' . $setting . '"><h3>' . $title . '</h3>';
 		$link = OPTINMONSTER_APP_URL . '/account/support/';
 		$field .= '<p>' . sprintf( wp_kses( __( 'Download the report and attach to your <a href="%s">support ticket</a> to help speed up the process.', 'optin-monster-api' ), array(  'a' => array( 'href' => array() ) ) ), esc_url( $link ) ) . '</p>';
-		$field .= '<a href="' . esc_url_raw( '#' ) . '" id="js--omapi-support-pdf" class="button button-primary button-large omapi-support-data-button" title="Download a PDF Report for Support" target="_blank">Download PDF Report</a>';
+		$field .= '<a href="' . esc_url_raw( '#' ) . '" id="js--omapi-support-pdf" class="button button-primary button-large omapi-support-data-button" title="' . esc_html__( 'Download a PDF Report for Support', 'optin-monster-api' ) . '" target="_blank">' . esc_html__( 'Download PDF Report', 'optin-monster-api' ) . '</a>';
 		$field .= '</div>';
 
 		return apply_filters( 'optin_monster_api_support_data', $field, $setting, $title );
@@ -1408,8 +1500,8 @@ class OMAPI_Menu {
 			// Set some default key details.
 			$defaults = array(
 				'key_id'        => '',
-				'description'   => 'no description found',
-				'truncated_key' => 'no truncated key found',
+				'description'   => esc_html__( 'no description found', 'optin-monster-api' ),
+				'truncated_key' => esc_html__( 'no truncated key found', 'optin-monster-api' ),
 			);
 
 			// Get the key details.
@@ -1423,18 +1515,18 @@ class OMAPI_Menu {
 			$key_string = "<code>{$description} (&hellip;{$truncated_key})</code>";
 			$key_url    = esc_url( add_query_arg( 'edit-key', $r['key_id'], $keys_admin_url ) );
 
-			$output .= '<p>WooCommerce is currently connected to OptinMonster with the following key:</p>';
+			$output .= '<p>' . esc_html__( 'WooCommerce is currently connected to OptinMonster with the following key:', 'optin-monster-api' ) . '</p>';
 			$output .= '<p>' . $key_string . ' <a href="' . $key_url . '">View key</a></p>';
-			$output .= '<p>You need to disconnect WooCommerce, below, to remove your keys from OptinMonster, or to change the consumer key/secret pair associated with OptinMonster.</p>';
+			$output .= '<p>' . esc_html__( 'You need to disconnect WooCommerce, below, to remove your keys from OptinMonster, or to change the consumer key/secret pair associated with OptinMonster.', 'optin-monster-api' ) . '</p>';
 			$output .= $this->get_hidden_field( 'disconnect', '1', 'woocommerce' );
 		} else {
 
-			$output .= '<p>In order to integrate WooCommerce with the Display Rules in the campaign builder, OptinMonster needs <a href="' . $keys_admin_url . '" target="_blank">WooCommerce REST API credentials</a>. OptinMonster only needs Read access permissions to work. Enter an existing consumer key/secret pair below, or we can auto-generate a new pair of keys for you.</p>';
+			$output .= '<p>' . sprintf( __( 'In order to integrate WooCommerce with the Display Rules in the campaign builder, OptinMonster needs <a href="%s" target="_blank">WooCommerce REST API credentials</a>. OptinMonster only needs Read access permissions to work. Enter an existing consumer key/secret pair below, or we can auto-generate a new pair of keys for you.', 'optin-monster-api' ), esc_url( $keys_admin_url ) ) . '</p>';
 			$output .= $this->get_text_field(
 				'consumer_key',
 				'',
 				'woocommerce',
-				__( 'Consumer key', 'optin-monster-api' ),
+				esc_html__( 'Consumer key', 'optin-monster-api' ),
 				'',
 				'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 			);
@@ -1442,7 +1534,7 @@ class OMAPI_Menu {
 				'consumer_secret',
 				'',
 				'woocommerce',
-				__( 'Consumer secret', 'optin-monster-api' ),
+				esc_html__( 'Consumer secret', 'optin-monster-api' ),
 				'',
 				'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 			);
@@ -1527,12 +1619,12 @@ class OMAPI_Menu {
 
 		$html .= '<div class="omapi-static-banner">';
 			$html .= '<div class="inner-container">';
-			$html .= '<div class="logo-wrapper">' . $this->get_svg_logo() . '<span class="omapi-logo-version">' . sprintf( __( 'v%s', 'optin-monster-api' ), $this->base->version ) . '</span></div>';
+			$html .= '<div class="logo-wrapper">' . $this->get_svg_logo() . '<span class="omapi-logo-version">' . sprintf( esc_html__( 'v%s', 'optin-monster-api' ), $this->base->version ) . '</span></div>';
 			$html .= '<div class="static-menu"><ul>';
-			$html .= '<li><a target="_blank" rel="noopener" href="' . esc_url_raw( 'https://optinmonster.com/docs/' ) . '">' . __('Need Help?', 'optin-monster-api') . '</a></li>';
-			$html .= '<li><a href="' . esc_url_raw( 'https://optinmonster.com/contact-us/' ) . '" target="_blank" rel="noopener">' .  __('Send Us Feedback', 'optin-monster-api') . '</a></li>';
+			$html .= '<li><a target="_blank" rel="noopener" href="' . esc_url_raw( 'https://optinmonster.com/docs/' ) . '">' . esc_html__( 'Need Help?', 'optin-monster-api' ) . '</a></li>';
+			$html .= '<li><a href="' . esc_url_raw( 'https://optinmonster.com/contact-us/' ) . '" target="_blank" rel="noopener">' .  esc_html__( 'Send Us Feedback', 'optin-monster-api' ) . '</a></li>';
 			if( $screen->id === 'toplevel_page_optin-monster-api-settings' ) {
-				$html .= '<li class="omapi-menu-button"><a id="omapi-create-new-optin-button" href="' . OPTINMONSTER_APP_URL . '/campaigns/new/" class="button button-secondary omapi-new-optin" title="' . __( 'Create New Campaign', 'optin-monster-api' ) . '" target="_blank" rel="noopener">' . __( 'Create New Campaign', 'optin-monster-api' ) . '</a></li>';
+				$html .= '<li class="omapi-menu-button"><a id="omapi-create-new-optin-button" href="' . OPTINMONSTER_APP_URL . '/campaigns/new/" class="button button-secondary omapi-new-optin" title="' . esc_html__( 'Create New Campaign', 'optin-monster-api' ) . '" target="_blank" rel="noopener">' . esc_html__( 'Create New Campaign', 'optin-monster-api' ) . '</a></li>';
 			}
 			$html .= '</ul></div>';
 		$html .= '</div>';

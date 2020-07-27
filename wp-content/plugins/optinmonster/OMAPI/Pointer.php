@@ -68,12 +68,12 @@ class OMAPI_Pointer {
 			return;
 		}
 
-		$content  = '<h3>' . __( 'Get More Leads, Subscribers and Sales Today!', 'optin-monster-api' ) . '</h3>';
+		$content  = '<h3>' . esc_html__( 'Get More Leads, Subscribers and Sales Today!', 'optin-monster-api' ) . '</h3>';
 		$content .= '<div class="om-pointer-close-link"><a class="close" href="#"></a></div>';
-		$content .= '<h4>' . __( 'Grow Your Business with OptinMonster', 'optin-monster-api' ) . '</h4>';
-		$content .= '<p>' . __( 'Turn your website visitors into subscribers and customers with OptinMonster, the #1 conversion optimization toolkit in the world.', 'optin-monster-api' ) . '</p>';
-		$content .= '<p>' . __( 'For a limited time, get 50% off any plan AND get instant access to OptinMonster University - our exclusive training portal with over $2,000 worth of courses, courses, content and videos', 'optin-monster-api' ) . '<strong> ' . __( '100% Free!', 'optin-monster-api' ) . '</strong></p>';
-		$content .= '<p><a class="button button-primary" id="omPointerButton" href="admin.php?page=optin-monster-api-welcome">' . __( 'Click Here to Learn More', 'optin-monster-api' ) . '</a>';
+		$content .= '<h4>' . esc_html__( 'Grow Your Business with OptinMonster', 'optin-monster-api' ) . '</h4>';
+		$content .= '<p>' . esc_html__( 'Turn your website visitors into subscribers and customers with OptinMonster, the #1 conversion optimization toolkit in the world.', 'optin-monster-api' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'For a limited time, get 50% off any plan AND get instant access to OptinMonster University - our exclusive training portal with over $2,000 worth of courses, courses, content and videos', 'optin-monster-api' ) . '<strong> ' . esc_html__( '100% Free!', 'optin-monster-api' ) . '</strong></p>';
+		$content .= '<p><a class="button button-primary" id="omPointerButton" href="admin.php?page=optin-monster-api-welcome">' . esc_html__( 'Click Here to Learn More', 'optin-monster-api' ) . '</a>';
 
 		$pointer = array(
 			'id'      => 'om-welcome-pointer',

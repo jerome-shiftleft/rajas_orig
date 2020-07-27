@@ -78,9 +78,15 @@ class ApiDashboard
             // Load updated general settings
             $this->settings = get_option( 'buttonizer_settings' );
         } else {
+            
             if ( $this->settings['migration_version'] === "2.0" ) {
                 ( new Update() )->update20to21();
+            } else {
+                if ( $this->settings['migration_version'] === "2.1" ) {
+                    ( new Update() )->update21to22();
+                }
             }
+        
         }
         
         // Load 'changes' boolean
@@ -174,16 +180,16 @@ class ApiDashboard
         register_setting( 'buttonizer', 'buttonizer_buttons' );
         // Load button settings
         $buttons = get_option( 'buttonizer_buttons' );
-        return ( is_array( $buttons ) ? $buttons : [ [
+        return ( is_array( $buttons ) && count( $buttons ) > 0 ? $buttons : [ [
             'data'    => [
-            'name'         => 'Group name',
+            'name'         => __( 'New group', 'buttonizer-multifunctional-button' ),
             'show_mobile'  => BUTTONIZER_DEF_MOBILE_VISIBILITY,
             'show_desktop' => BUTTONIZER_DEF_DESKTOP_VISIBILITY,
             'horizontal'   => 5,
             'vertical'     => 5,
         ],
             'buttons' => [ [
-            'name'         => 'Button name',
+            'name'         => __( 'New button', 'buttonizer-multifunctional-button' ),
             'show_mobile'  => BUTTONIZER_DEF_MOBILE_VISIBILITY,
             'show_desktop' => BUTTONIZER_DEF_DESKTOP_VISIBILITY,
         ] ],

@@ -4,7 +4,7 @@ Buy plugin: https://buttonizer.pro
 Tags: Conversion, action button, call, marketing, Social Sharing
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 2.1.1
+Stable tag: 2.1.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -154,6 +154,85 @@ And the beauty of all: All actions are hidden in one button. The moment a visito
 In fact, Buttonizer is an addiction to use. Your website visitors will interact as never before.
 
 == Changelog ==
+= 2.1.7 =
+Release date: 24 June 2020
+
+**Changelog:**
+- Fix mobile only not working
+- Fix position causing buttonizer to not show
+- Changed whatsapp action to use wa.me
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+= 2.1.6 =
+Release date: 20 June 2020
+
+**Changelog:**
+- Hotfix multiple bugs
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+
+= 2.1.5 =
+Release date: 17 June 2020
+
+**New Features**
+- You can now open button settings by selecting them in preview
+- Added 'close on click outside' functionality
+- Add more 'add buttons' buttons
+- Buttonizer frontend improved performance:
+  - CSS now uses graphics powers
+  - Removed jQuery dependency
+
+Read the full changelog [here](https://community.buttonizer.pro/d/364-changelog-215)
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+**Bug fix**
+
+= 2.1.4 =
+Release date: 14 May 2020
+
+**Bug fix:**
+- Fixed a dashboard crash when entering the Buttonizer dashboard in specific situations
+- Fixed several bugs in 'exit intent'
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+= 2.1.3 =
+Release date: 11 May 2020
+
+Ciao! Buttonizer in Italiano! Buttonizer is now available in Italian, thanks to Ivano (a Buttonizer user)! Would you like to translate with us? [Become a contributor](https://poeditor.com/join/project/VW4vKq73HO)!
+
+**Bug fixes & updates:**
+- Added Italian language
+- Added new button action: "Go to bottom"
+- Renewed saving method
+- Fix icon search 'map' crash
+- Fix color picker crash when having "transparent" as color
+- Fix issue with subject & body not working
+- Fix issue with messenger widget
+- Fix exit intent for single buttons
+- Fixed several crashes
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+= 2.1.2 =
+Release date: 30 April 2020
+
+**Bug fixes & updates:**
+- Fix single button saving loop
+- Fix exit intent crash
+- Fix bug in time schedules
+- Possible fix some crashes on new installs
+- Possible fix ajaxurl error some users experienced
+- Possible fix current_screen() crash
+- Improved translation management in UI
+- Improved no-ajax feature
+- Improved performance
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
 = 2.1.1 =
 Release date: 28 April 2020
 

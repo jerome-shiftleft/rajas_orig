@@ -159,12 +159,13 @@ class OMAPI_Save {
 						$option['is_invalid']  = false;
 						$option['is_expired']  = false;
 						$option['is_disabled'] = false;
+						$option['connected']   = time();
 
 						// Store the optin data.
 						$this->store_optins( $ret );
 
 						// Save the option.
-						$this->update_optin_monster_api_option( $option, $data, $this->view );
+						$this->update_optin_monster_api_option( $option, $data );
 						wp_safe_redirect( admin_url( 'admin.php?page=optin-monster-api-settings&optin_monster_api_view=optins' ) );
 					}
 					// End since we are working with the new apikey
@@ -195,9 +196,9 @@ class OMAPI_Save {
 						$option['api']['key']  = '';
 
 						// Save the option.
-						$this->update_optin_monster_api_option( $option, $data, $this->view );
+						$this->update_optin_monster_api_option( $option, $data );
 					} else {
-						$this->errors['error'] = __( 'You must provide a valid API Key to authenticate with OptinMonster.', 'optin-monster-api' );
+						$this->errors['error'] = esc_html__( 'You must provide a valid API Key to authenticate with OptinMonster.', 'optin-monster-api' );
 					}
 				} else {
 					$api = new OMAPI_Api( 'verify/', array( 'user' => $user, 'key' => $key ) );
@@ -213,12 +214,13 @@ class OMAPI_Save {
 						$option['is_invalid']  = false;
 						$option['is_expired']  = false;
 						$option['is_disabled'] = false;
+						$option['connected']   = time();
 
 						// Store the optin data.
 						$this->store_optins( $ret );
 
 						// Save the option.
-						$this->update_optin_monster_api_option( $option, $data, $this->view );
+						$this->update_optin_monster_api_option( $option, $data );
 					}
 				}
 			break;
@@ -268,8 +270,9 @@ class OMAPI_Save {
 				}
 
 				if ( $this->base->is_mailpoet_active() ) {
-					$fields['mailpoet']      = isset( $data['mailpoet'] ) ? 1 : 0;
-					$fields['mailpoet_list'] = isset( $data['mailpoet_list'] ) ? esc_attr( $data['mailpoet_list'] ) : 'none';
+					$fields['mailpoet']             = isset( $data['mailpoet'] ) ? 1 : 0;
+					$fields['mailpoet_list']        = isset( $data['mailpoet_list'] ) ? esc_attr( $data['mailpoet_list'] ) : 'none';
+					$fields['mailpoet_phone_field'] = isset( $data['mailpoet_use_phone'], $data['mailpoet_phone_field'] ) ? esc_attr( $data['mailpoet_phone_field'] ) : '';
 				}
 
 				// Allow fields to be filtered.
@@ -286,7 +289,7 @@ class OMAPI_Save {
 				$option['settings']['cookies'] = isset( $data['cookies'] ) ? 1 : 0;
 
 				// Save the option.
-				$this->update_optin_monster_api_option( $option, $data, $this->view );
+				$this->update_optin_monster_api_option( $option, $data );
 			break;
 
 			case 'woocommerce':
@@ -294,7 +297,7 @@ class OMAPI_Save {
 					// Auto-generate a key pair.
 					$auto_generated_keys = $this->woocommerce_autogenerate();
 					if ( empty( $auto_generated_keys ) ) {
-						$this->errors['error'] = __( 'WooCommerce REST API keys could not be auto-generated on your behalf. Please try again.', 'optin-monster-api' );
+						$this->errors['error'] = esc_html__( 'WooCommerce REST API keys could not be auto-generated on your behalf. Please try again.', 'optin-monster-api' );
 						break;
 					}
 
@@ -308,6 +311,8 @@ class OMAPI_Save {
 					$this->woocommerce_disconnect( $data );
 				}
 				break;
+			default:
+			break;
 		}
 
 		// If selected, clear out all local cookies.
@@ -352,7 +357,7 @@ class OMAPI_Save {
 
 		// Loop through all of the local optins so we can try to match and update.
 		$local_optins = $this->base->get_optins();
-		if ( $local_optins ) {
+		if ( ! empty( $local_optins ) ) {
 			$this->sync_optins( $local_optins, $optins );
 		} else {
 			$this->add_optins( $optins );
@@ -515,7 +520,31 @@ class OMAPI_Save {
 	 *
 	 * @return void
 	 */
-	public function update_optin_monster_api_option( $option, $data, $view ) {
+	public function update_optin_monster_api_option( $option, $data, $view = '' ) {
+		$this->update_option( $option, $view, $data );
+	}
+
+	/**
+	 * Updated the `optin_monster_api` option in the database.
+	 *
+	 * @since 1.9.8
+	 *
+	 * @param array  $option The full `optin_monster_api` option array.
+	 * @param string $view   Optional. The current settings menu view.
+	 * @param array  $data   Optional. The parameters passed in via POST request.
+	 *
+	 * @return mixed The results of update_option.
+	 */
+	public function update_option( $option, $view = '', $data = array() ) {
+		$view = $view ? $view : $this->view;
+
+		// Allow storing the timestamp of when the API is connected for "first time".
+		// We are not changing it if the user disconnects and reconnects.
+		$connected = $this->base->get_option( 'connected' );
+		if ( ! empty( $connected ) ) {
+			unset( $option['connected'] );
+		}
+
 		/**
 		 * Filters the `optin_monster_api` option before being saved to the database.
 		 *
@@ -528,7 +557,7 @@ class OMAPI_Save {
 		$option = apply_filters( 'optin_monster_api_save', $option, $data, $view );
 
 		// Save the option.
-		update_option( 'optin_monster_api', $option );
+		return update_option( 'optin_monster_api', $option );
 	}
 
 	/**
@@ -549,7 +578,7 @@ class OMAPI_Save {
 			'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
 			'body'      => array(
 				'action'      => 'woocommerce_update_api_key',
-				'description' => 'OptinMonster API Read-Access (Auto-Generated)',
+				'description' => esc_html__( 'OptinMonster API Read-Access (Auto-Generated)', 'optin-monster-api' ),
 				'permissions' => 'read',
 				'user'        => get_current_user_id(),
 				'security'    => wp_create_nonce( 'update-api-key' ),
@@ -615,7 +644,7 @@ class OMAPI_Save {
 			if ( is_wp_error( $response ) ) {
 				$this->errors['error'] = isset( $response->message )
 					? $response->message
-					: __( 'WooCommerce could not be connected to OptinMonster. The OptinMonster API returned with the following response: ', 'optin-monster-api' ) . $response->get_error_message();
+					: esc_html__( 'WooCommerce could not be connected to OptinMonster. The OptinMonster API returned with the following response: ', 'optin-monster-api' ) . $response->get_error_message();
 			} else {
 
 				// Get the shop hostname.
@@ -635,7 +664,7 @@ class OMAPI_Save {
 				);
 
 				// Save the option.
-				$this->update_optin_monster_api_option( $option, $data, $this->view );
+				$this->update_optin_monster_api_option( $option, $data );
 			}
 		}
 	}
@@ -656,14 +685,14 @@ class OMAPI_Save {
 		if ( is_wp_error( $response ) ) {
 			$this->errors['error'] = isset( $response->message )
 				? $response->message
-				: __( 'WooCommerce could not be disconnected from OptinMonster. The OptinMonster API returned with the following response: ', 'optin-monster-api' ) . $response->get_error_message();
+				: esc_html__( 'WooCommerce could not be disconnected from OptinMonster. The OptinMonster API returned with the following response: ', 'optin-monster-api' ) . $response->get_error_message();
 		} else {
 			$option = $this->base->get_option();
 
 			unset( $option['woocommerce'] );
 
 			// Save the option.
-			$this->update_optin_monster_api_option( $option, $data, $this->view );
+			$this->update_optin_monster_api_option( $option, $data );
 		}
 	}
 
@@ -690,7 +719,7 @@ class OMAPI_Save {
 	public function message() {
 
 		?>
-		<div class="updated"><p><?php _e( 'Your settings have been saved successfully.', 'optin-monster-api' ); ?></p></div>
+		<div class="updated"><p><?php esc_html_e( 'Your settings have been saved successfully.', 'optin-monster-api' ); ?></p></div>
 		<?php
 
 	}

@@ -28,7 +28,7 @@ class Buttonizer
     /**
      * Buttons constructor.
      */
-    public function __construct()
+    public function __construct( $noAjax = false )
     {
         if ( isset( $_GET['preview'] ) && $_GET['preview'] === '1' && (current_user_can( 'editor' ) || current_user_can( 'administrator' )) ) {
             self::$published = '';

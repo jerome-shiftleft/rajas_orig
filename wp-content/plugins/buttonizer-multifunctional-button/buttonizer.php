@@ -3,7 +3,7 @@
 * Plugin Name: Buttonizer - Smart Floating Action Button
 * Plugin URI:  https://buttonizer.pro
 * Description: The Buttonizer is a new way to give a boost to your number of interactions, actions and conversions from your website visitor by adding one or multiple Customizable Smart Floating Button in the corner of your website.
-* Version:     2.1.1
+* Version:     2.1.7
 * Author:      Buttonizer
 * Author URI:  https://buttonizer.pro
 * License:     GPL2
@@ -34,7 +34,7 @@ define('BUTTONIZER_NAME', 'buttonizer');
 define('BUTTONIZER_DIR', dirname(__FILE__));
 define('BUTTONIZER_SLUG', basename(BUTTONIZER_DIR));
 define('BUTTONIZER_PLUGIN_DIR', __FILE__ );
-define('BUTTONIZER_VERSION', '2.1.1');
+define('BUTTONIZER_VERSION', '2.1.7');
 define('BUTTONIZER_DEBUG', false);
 
 define('FONTAWESOME_CURRENT_VERSION', 'v5.8.2');
@@ -128,13 +128,14 @@ if(!defined('BUTTONIZER_DEFINED')) {
     /**
      * Create Buttonizer API endpoints
      */
-    new Buttonizer\Api\Api();
+    add_action( 'rest_api_init', function() {
+        new Buttonizer\Api\Api();
+    });
 
     /**
      * Frontend 
      */
     new Buttonizer\Frontend\Ajax();
-
 
     /* LAST FEW FUNCTIONS */
     if(!function_exists("buttonizer_custom_connect_message")) {
@@ -177,11 +178,11 @@ if(!defined('BUTTONIZER_DEFINED')) {
     });
 
     // Localization
+    add_action('init', 'buttonizer_load_plugin_textdomain');
+    
     function buttonizer_load_plugin_textdomain() {
-        load_plugin_textdomain('buttonizer-multifunctional-button', false, BUTTONIZER_DIR . '/languages/');
+        load_plugin_textdomain( 'buttonizer-multifunctional-button', false, dirname(plugin_basename(__FILE__)) . '/languages' ); 
     }
-
-    add_action('plugins_loaded', 'buttonizer_load_plugin_textdomain');
 
     // System, buttonizer is loaded
     do_action('buttonizer_loaded');

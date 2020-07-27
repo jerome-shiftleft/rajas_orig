@@ -53,7 +53,7 @@ class PluginUpdateChecker_3_1 {
 		$this->muPluginFile = $muPluginFile;
 		$this->slug = $slug;
 		$this->optionName = $optionName;
-		$this->debugMode = false; // Algoritmika // (bool)(constant('WP_DEBUG'));
+		$this->debugMode = false; // Pluggabl // (bool)(constant('WP_DEBUG'));
 
 		//If no slug is specified, use the name of the main plugin file as the slug.
 		//For example, 'my-cool-plugin/cool-plugin.php' becomes 'cool-plugin'.
@@ -755,7 +755,7 @@ class PluginUpdateChecker_3_1 {
 						'puc_check_for_updates' => 1,
 						'puc_slug' => $this->slug,
 					),
-					remove_query_arg( 'puc_update_check_result' ) // self_admin_url('plugins.php') // Algoritmika
+					remove_query_arg( 'puc_update_check_result' ) // self_admin_url('plugins.php') // Pluggabl
 				),
 				'puc_check_for_updates'
 			);
@@ -789,7 +789,7 @@ class PluginUpdateChecker_3_1 {
 					'puc_update_check_result' => $status,
 					'puc_slug' => $this->slug,
 				),
-				remove_query_arg( array( 'puc_check_for_updates', '_wpnonce' ) ) // self_admin_url('plugins.php') // Algoritmika
+				remove_query_arg( array( 'puc_check_for_updates', '_wpnonce' ) ) // self_admin_url('plugins.php') // Pluggabl
 			));
 		}
 	}
@@ -1001,7 +1001,7 @@ class PluginInfo_3_1 {
 		/** @var StdClass $apiResponse */
 		$apiResponse = json_decode($json);
 		if ( empty($apiResponse) || !is_object($apiResponse) ){
-			/* trigger_error( // Algoritmika
+			/* trigger_error( // Pluggabl
 				"Failed to parse plugin metadata. Try validating your .json file with http://jsonlint.com/",
 				E_USER_NOTICE
 			); */
@@ -1010,7 +1010,7 @@ class PluginInfo_3_1 {
 		
 		$valid = self::validateMetadata($apiResponse);
 		if ( is_wp_error($valid) ){
-//			trigger_error($valid->get_error_message(), E_USER_NOTICE); // Algoritmika
+//			trigger_error($valid->get_error_message(), E_USER_NOTICE); // Pluggabl
 			return null;
 		}
 		

@@ -445,7 +445,7 @@ class Remigrate
     {
         $settings = [];
 
-        $settings['migration_version'] = '2.1';
+        $settings['migration_version'] = '2.2';
         $settings['import_icon_library'] = 'true';
 
         if($newInstall === false) {

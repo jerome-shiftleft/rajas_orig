@@ -75,7 +75,8 @@ class Translations {
             'premium_license_free_version' => [
                 'title' => __('License activated', 'buttonizer-multifunctional-button'),
                 'information' => __('Please download and upload the premium version found in the email we have sent you to use all premium functions.', 'buttonizer-multifunctional-button'),    
-            ]
+            ],
+            'unsaved_changes' => __('Are you sure you want to exit? Your changes have not been saved.', 'buttonizer-multifunctional-button')
         ];
     }
 
@@ -116,6 +117,7 @@ class Translations {
             'save' => __('Save', 'buttonizer-multifunctional-button'),
             'saving' => __('Saving', 'buttonizer-multifunctional-button'),
             'saving_settings' => __('Saving settings', 'buttonizer-multifunctional-button'),
+            'save_and_close' => __('Save and close', 'buttonizer-multifunctional-button'),
 
             'publish' => __('Publish', 'buttonizer-multifunctional-button'),
             'published' => __('Published', 'buttonizer-multifunctional-button'),
@@ -166,7 +168,9 @@ class Translations {
 
             // New button and new group
             'new_button' => __('New button', 'buttonizer-multifunctional-button'),
+            'choose_button_name' => __('Choose a name for the button.', 'buttonizer-multifunctional-button'),
             'new_group' => __('New group', 'buttonizer-multifunctional-button'),
+            'choose_group_name' => __('Choose a name for the group.', 'buttonizer-multifunctional-button'),
 
             // Advanced button/group settings
             'style' => __('Style', 'buttonizer-multifunctional-button'),
@@ -177,7 +181,6 @@ class Translations {
             'base' => __('Base', 'buttonizer-multifunctional-button'),
             'icon' => __('Icon', 'buttonizer-multifunctional-button'),
             'color' => __('Color', 'buttonizer-multifunctional-button'),
-            'search_icon' => __('Search icon', 'buttonizer-multifunctional-button'),
 
             // Image strings
             'image' => __('Image', 'buttonizer-multifunctional-button'),
@@ -193,9 +196,11 @@ class Translations {
 
             // Rename
             'rename' => __('Rename', 'buttonizer-multifunctional-button'),
+            'rename_to' => __('Rename to:', 'buttonizer-multifunctional-button'),
 
             // Delete
             'delete' => __('Delete', 'buttonizer-multifunctional-button'),
+            'clear' => __('Clear', 'buttonizer-multifunctional-button'),
 
             // Duplicate
             'duplicate' => __('Duplicate', 'buttonizer-multifunctional-button'),
@@ -216,22 +221,40 @@ class Translations {
             'visit_knowledgebase' => __('Need help? Visit our knowledge base!', 'buttonizer-multifunctional-button'),
 
             'search_not_found' => __('Nothing found for:', 'buttonizer-multifunctional-button'),
-            'search_icons' => __('Search icons', 'buttonizer-multifunctional-button'),
+
+            'icon_selector' => [
+                'title' => __('Icon selector', 'buttonizer-multifunctional-button'),
+                'search_icon' => __('Search icon', 'buttonizer-multifunctional-button'),
+                'loading' => __('Loading icons, please wait...', 'buttonizer-multifunctional-button'),
+                'searching_for' => sprintf(
+                    // translators: %1$s will be the searchterm, %2$s is the amount of results that have been found
+                    __('Searching for: %1$s, found %2$s results.', 'buttonizer-multifunctional-button'),
+                '<b>{0}</b>', '<b>{1}</b>'),
+                'remove_filter' => __('Remove filter', 'buttonizer-multifunctional-button'),
+            ],
 
             'crash' => [
                 'title' => __('Buttonizer has crashed!', 'buttonizer-multifunctional-button'),
                 'subtitle' => __('Our development team has been notified.', 'buttonizer-multifunctional-button'),
                 'subtitle2' => __('If you\'d like to help, tell us what happened below.', 'buttonizer-multifunctional-button'),
-                'no_super' => __('Buttonizer has crashed, but you have not enabled automatic error
-                reporting! Would you like to become a SUPER contributor and
-                automatically log errors, including this one?', 'buttonizer-multifunctional-button')
+                'no_super' => __('Buttonizer has crashed, but you have not enabled automatic error reporting! Would you like to become a SUPER contributor and automatically log errors, including this one?', 'buttonizer-multifunctional-button')
             ],
 
             'knowledge_link' => sprintf(
-            // translators: %1$s will be replaced with a action name, %2$s will be replaced with a link
+                // translators: %1$s will be replaced with a action name, %2$s will be replaced with a link
                 __('Need help? Learn how to use <b>%1$s</b>.', 'buttonizer-multifunctional-button'),
                 '{0}', 'href="{1}" target="_blank"'
             ),
+
+            'filter-visibility' => [
+                // Time schedule
+                'timeschedule_show_button' => __('Show button at all times', 'buttonizer-multifunctional-button'),
+                'timeschedule_show_group' => __('Show group at all times', 'buttonizer-multifunctional-button'),
+
+                // Page rule
+                'pagerule_show_button' => __('Show button on all pages', 'buttonizer-multifunctional-button'),
+                'pagerule_show_group' => __('Show group on all pages', 'buttonizer-multifunctional-button'),
+            ]
         ];
     }
 
@@ -342,9 +365,9 @@ class Translations {
      */
     private function saving() {
         return [
-            'saving' => 'Saving...',
+            'saving' => 'Saving draft...',
             'failed' => 'Failed!',
-            'completed' => 'Saved!'
+            'completed' => 'Saved draft!'
         ];
     }
 
@@ -403,6 +426,17 @@ class Translations {
                 'title' => __('Button color', 'buttonizer-multifunctional-button'),
                 'description' => __('This is the color of your button group and also the default color for your buttons within this group.', 'buttonizer-multifunctional-button'),
             ],
+
+            'font_family' => [
+                'title' => __('Font family', 'buttonizer-multifunctional-button'),
+                'placeholder' => __('Type a custom font', 'buttonizer-multifunctional-button'),
+                'add' => sprintf(
+                    // translators: %1$s will be the inputted text.
+                    __('Type "," to add %1$s', 'buttonizer-multifunctional-button'),
+                    '{0}'
+                ),
+            ],
+
             'background_image' => [
                 'title' => __('Background image', 'buttonizer-multifunctional-button'),
                 'description' => __('Upload an image if you want an image as a background instead of a color. Recommended aspect ratio: square (1:1).', 'buttonizer-multifunctional-button'),
@@ -410,6 +444,14 @@ class Translations {
             'border_radius' => [
                 'title' => __('Border radius', 'buttonizer-multifunctional-button'),
                 'description' => __('Change the roundness of this button group.', 'buttonizer-multifunctional-button'),
+            ],
+            'margin' => [
+                'title' => __('Margin', 'buttonizer-multifunctional-button'),
+                'description' => __('Change the position of the label.', 'buttonizer-multifunctional-button'),
+            ],
+            'padding' => [
+                'title' => __('Padding', 'buttonizer-multifunctional-button'),
+                'description' => __('Change the background size of the label.', 'buttonizer-multifunctional-button'),
             ],
             'icon' => [
                 'title' => __('Icon', 'buttonizer-multifunctional-button'),
@@ -457,6 +499,9 @@ class Translations {
             'menu_animation' => [
                 'title' => __('Animation', 'buttonizer-multifunctional-button'),
                 'description' => __('This will animate this button group to get the attention of the visitor. The animation repeats itself every 10 seconds.', 'buttonizer-multifunctional-button'),
+                'delay' => __('Delay', 'buttonizer-multifunctional-button'),
+                'repeat_count' => __('Repeat Count', 'buttonizer-multifunctional-button'),
+                'repeat_helper_text' => __('Enter \'0\' for unlimited', 'buttonizer-multifunctional-button'),
                 'animations' => [
                     'none' => __('No animation', 'buttonizer-multifunctional-button'),
                     'hello' => __('Buttonizer Hello', 'buttonizer-multifunctional-button'),
@@ -470,10 +515,20 @@ class Translations {
                 'description' => __('Change the position of this button group.', 'buttonizer-multifunctional-button'),
                 'horizontal' => __('Horizontal', 'buttonizer-multifunctional-button'),
                 'vertical' => __('Vertical', 'buttonizer-multifunctional-button'),
+                'from' => __('from', 'buttonizer-multifunctional-button'),
+                'scaled' => __('Scaled', 'buttonizer-multifunctional-button'),
+                'absolute' => __('Absolute', 'buttonizer-multifunctional-button'),
+                'directions' => [
+                    'left' => __('Left', 'buttonizer-multifunctional-button'),
+                    'right' => __('Right', 'buttonizer-multifunctional-button'),
+                    'bottom' => __('Bottom', 'buttonizer-multifunctional-button'),
+                    'top' => __('Top', 'buttonizer-multifunctional-button')
+                ]
             ],
             'menu_style' => [
                 'title' => __('Menu Style', 'buttonizer-multifunctional-button'),
                 'description' => __('Change the menu style of this button group.', 'buttonizer-multifunctional-button'),
+                // translators: The %s is the menu style that is selected
                 'warning' => sprintf( __('This setting is not used when using the %s menu style...', 'buttonizer-multifunctional-button'), 
                     '{0}'
                 ),
@@ -485,6 +540,8 @@ class Translations {
                     'pop' => __('Pop', 'buttonizer-multifunctional-button'),
                     'square' => __('Square', 'buttonizer-multifunctional-button'),
                     'rectangle' => __('Rectangle', 'buttonizer-multifunctional-button'),
+                    'text' => __('Text only', 'buttonizer-multifunctional-button'),
+                    'texticon' => __('Text w/ icon', 'buttonizer-multifunctional-button'),
                 ]
             ],
             'label_desktop' => [
@@ -537,6 +594,8 @@ class Translations {
                 'pro_description' => __('You can add a custom class to each button for styling purposes.', 'buttonizer-multifunctional-button'),
                 // translators: 'class' as in HTML attribute 'class'
                 'placeholder' => __('Class name', 'buttonizer-multifunctional-button'),
+                'styling_editor' => __('Open Custom Styling Editor', 'buttonizer-multifunctional-button'),
+                'styling_editor_title' => __('Custom Styling Editor', 'buttonizer-multifunctional-button')
             ],
             'selected_page_rule' => [
                 'title' => __('Page rule', 'buttonizer-multifunctional-button'),
@@ -554,7 +613,7 @@ class Translations {
             'timeout_scroll' => [
                 'timeout' => [
                     'title' => __('Timeout', 'buttonizer-multifunctional-button'),
-                    'miliseconds' => __('Miliseconds', 'buttonizer-multifunctional-button'),
+                    'milliseconds' => __('Milliseconds', 'buttonizer-multifunctional-button'),
                     'info' => sprintf(
                         // translators: %s will become the value of the setting
                         __('Show Buttonizer after %s seconds', 'buttonizer-multifunctional-button'),
@@ -600,7 +659,9 @@ class Translations {
                     'focused' => __('Focused', 'buttonizer-multifunctional-button'),
                     'open_menu' => __('Open menu', 'buttonizer-multifunctional-button'),
                     'jump' => __('Jump once and open', 'buttonizer-multifunctional-button'),
+                    'jump_single' => __('Jump once', 'buttonizer-multifunctional-button'),
                     'flip' => __('Flip and open', 'buttonizer-multifunctional-button'),
+                    'flip_single' => __('Flip', 'buttonizer-multifunctional-button')
                 ]
             ],
 
@@ -627,6 +688,7 @@ class Translations {
                         'invalid' => __('Invalid email address.', 'buttonizer-multifunctional-button'),
                     ],
                     'back_to_top' => __('Back to top', 'buttonizer-multifunctional-button'),
+                    'go_to_bottom' => __('Go to bottom', 'buttonizer-multifunctional-button'),
                     'go_back_one_page' => __('Go back one page', 'buttonizer-multifunctional-button'),
                     'share_page' => __('Share page', 'buttonizer-multifunctional-button'),
                     'sms' => __('SMS', 'buttonizer-multifunctional-button'),
@@ -763,6 +825,10 @@ class Translations {
                 'description' => __('Measure your conversions', 'buttonizer-multifunctional-button'),
                 'intro' => __('When enabled, Buttonizer will automatically log clicks to your Google Analytics account. You can force Buttonizer not to use the Google Analytics by disabling this switch.', 'buttonizer-multifunctional-button'),
 
+                // Tracking code
+                'tracking_code_info' => __('Google Analytics is automatically detected if you have added it to your webpage. But, if you don\'t make use of Google Analytics yet and  this is your first time, Buttonizer can add it for you.', 'buttonizer-multifunctional-button'),
+                'tracking_code_warning' => __('If you have added Google Analytics to your webpage before and Buttonizer also adds the same Analytics code, it will mess with your analytics data!', 'buttonizer-multifunctional-button'),
+
                 // translators: Please keep the code-example 'UA-000000-2'
                 'input' => __('UA Code', 'buttonizer-multifunctional-button'),
 
@@ -857,6 +923,7 @@ class Translations {
     private function bar() {
         return [
             'previous_session' => __('Loaded changes from previous session', 'buttonizer-multifunctional-button'),
+            'edit_group_settings' => __('Edit group settings', 'buttonizer-multifunctional-button'),
             'preview' => [
                 'no_changes' => __('You probably have clicked a link, this made you leave the preview window of Buttonizer. You cannot see your changes here.', 'buttonizer-multifunctional-button'),
                 'return' => __('Return to preview', 'buttonizer-multifunctional-button'),
@@ -898,7 +965,7 @@ class Translations {
                 'wp_admin' => __('Back to the WordPress dashboard', 'buttonizer-multifunctional-button'),
 
                 // Follow us
-                'follow' => __('Follow us for awesome tips & tricks!', 'buttonizer-multifunctional-button'),
+                'follow' => __('Follow us for useful tips & tricks!', 'buttonizer-multifunctional-button'),
 
                 // Account
                 'account_group' => __('Buttonizer account', 'buttonizer-multifunctional-button'),
@@ -953,8 +1020,10 @@ class Translations {
 
             'conditions' => [
                 'title' => __('Conditions', 'buttonizer-multifunctional-button'),
-                'show_on' => __('Show this {0} when this page rule is activated', 'buttonizer-multifunctional-button'),
-                'hide_on' => __('Hide this {0} when this page rule is activated', 'buttonizer-multifunctional-button'),
+                'show_group_on' => __('Show group when this page rule is activated', 'buttonizer-multifunctional-button'),
+                'hide_group_on' => __('Hide group when this page rule is activated', 'buttonizer-multifunctional-button'),
+                'show_button_on' => __('Show button when this page rule is activated', 'buttonizer-multifunctional-button'),
+                'hide_button_on' => __('Hide button when this page rule is activated', 'buttonizer-multifunctional-button'),
                 'add' => __('Add condition', 'buttonizer-multifunctional-button')
             ],  
 
@@ -962,8 +1031,7 @@ class Translations {
             'empty' => [
                 'page' => __('No page rules', 'buttonizer-multifunctional-button'),
                 'selected' => __('No page rule selected', 'buttonizer-multifunctional-button'),
-                'rules' => __('There are no rules for this page rule. All buttons attached to this
-                page rule will be visible. Press \'Add condition\' to add one!', 'buttonizer-multifunctional-button'),
+                'rules' => __('There are no rules for this page rule. All buttons attached to this page rule will be visible. Press \'Add condition\' to add one!', 'buttonizer-multifunctional-button'),
             ],
 
             // Types
@@ -1038,8 +1106,10 @@ class Translations {
             'till' => __('till', 'buttonizer-multifunctional-button'),
 
             'conditions' => [
-                'show_on' => __('Show this {0} when this time schedule is activated', 'buttonizer-multifunctional-button'),
-                'hide_on' => __('Hide this {0} when this time schedule is activated', 'buttonizer-multifunctional-button')
+                'show_group_on' => __('Show group when this time schedule is activated', 'buttonizer-multifunctional-button'),
+                'hide_group_on' => __('Hide group when this time schedule is activated', 'buttonizer-multifunctional-button'),
+                'show_button_on' => __('Show button when this time schedule is activated', 'buttonizer-multifunctional-button'),
+                'hide_button_on' => __('Hide button when this time schedule is activated', 'buttonizer-multifunctional-button'),
             ],
 
             'trigger' => [
@@ -1093,10 +1163,7 @@ class Translations {
             'exclude' => [
                 'title' => __('Excluded Dates', 'buttonizer-multifunctional-button'),
                 'add' => __('Add Excluded Date', 'buttonizer-multifunctional-button'),
-                'info' => __('Add specific dates to show or hide the buttons attached to this time
-                scheme. For example: “ My store is open on January 22th until 22:00 (10
-                PM) because of some special evening we organize." The rule will
-                overwrite the default settings for that day.', 'buttonizer-multifunctional-button'),
+                'info' => __('Add specific dates to show or hide the buttons attached to this time scheme. For example: "My store is open on January 22th until 22:00 (10 PM) because of some special evening we organize." The rule will overwrite the default settings for that day.', 'buttonizer-multifunctional-button'),
             ],
 
             // Trigger from
@@ -1209,10 +1276,18 @@ class Translations {
             'page_rules' => [
                 'first_page_rule' => __('My first page rule', 'buttonizer-multifunctional-button')
             ],
+            'menu_styles' => [
+                'text' => __("This menu style will remove the icon and add the label into the button, making it one long button.", 'buttonizer-multifunctional-button'),
+                'text-icon' => __("This menu style will add the label into the button with an icon, making it one long button.", 'buttonizer-multifunctional-button')
+            ],
             'multiple_button_groups' => __('You are able to add multiple groups on different positions', 'buttonizer-multifunctional-button'),
             'custom_image' => __('You can select images and set them as icon or as button background image.', 'buttonizer-multifunctional-button'),
             'show_on_timeout' => __('With this setting, you can make your button appear/hide after certain amount of time.', 'buttonizer-multifunctional-button'),
             'show_on_scroll' => __('With this setting, you can make your button appear/hide after scrolling for a certain amount.', 'buttonizer-multifunctional-button'),
+            'add_animation_settings' => __('With this setting, you can change your animation settings like delay and repeat count.', 'buttonizer-multifunctional-button'),
+            'font_family' => __('With this setting, you can change the font family of the label. You choose a font add your custom font.', 'buttonizer-multifunctional-button'),
+            'margin' => __('With this setting, you can change the margin of the label. Change the position of the label relative to it\'s button', 'buttonizer-multifunctional-button'),
+            'padding' => __('With this setting, you can change the size of the label.', 'buttonizer-multifunctional-button')
         ];
     }
 
@@ -1230,13 +1305,13 @@ class Translations {
                 'Buttonizer 2.0'
             ),
             'super-contributor' => __('Become a SUPER contributor by automatically sending us crash reports and error logs. This way we can bugfix your bugs with the speed of light. Don\'t worry, all data is anonymized.','buttonizer-multifunctional-button'),
-            'learn-more' => __('Learn More', 'buttonizer-multifunctional-button'),
+            'learn-more' => __('Learn more', 'buttonizer-multifunctional-button'),
             'no-thanks' => __('No thanks', 'buttonizer-multifunctional-button'),
             'yes-please' => __('Yes please!', 'buttonizer-multifunctional-button'),
             'tour'  => __('We\'ve created a tour for our new users. Would you like to take the tour?', 'buttonizer-multifunctional-button'),
             'already_know' => __('No thanks, I know how it works', 'buttonizer-multifunctional-button'),
             'take_tour' => __('Yes please', 'buttonizer-multifunctional-button'),
-            'open_menu' => __('Open Menu', 'buttonizer-multifunctional-button'),
+            'open_menu' => __('Open menu', 'buttonizer-multifunctional-button'),
             'back_to_overview' => __('Back to Overview', 'buttonizer-multifunctional-button')
         ];
     }

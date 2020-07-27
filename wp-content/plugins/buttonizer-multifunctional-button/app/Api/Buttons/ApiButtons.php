@@ -62,7 +62,7 @@ class ApiButtons {
     /**
      * Get frontend data
      */
-    public function get() {
+    public function get($isNoAjaxRequest = false) {
         $this->_settings = get_option("buttonizer_settings");
 
         // Update if we need to do that
@@ -73,9 +73,12 @@ class ApiButtons {
         else if ($this->_settings['migration_version'] === "2.0") {
             (new \Buttonizer\Utils\Update())->update20to21();
         }
+        else if ($this->_settings['migration_version'] === "2.1") {
+            (new \Buttonizer\Utils\Update())->update21to22();
+        }
 
         // Allow XHR requests from subdomains
-        if(isset($this->_settings['allow_subdomains']) && $this->_settings['allow_subdomains'] == 'true' && isset($_SERVER['HTTP_ORIGIN'])) {
+        if(!$isNoAjaxRequest && isset($this->_settings['allow_subdomains']) && $this->_settings['allow_subdomains'] == 'true' && isset($_SERVER['HTTP_ORIGIN'])) {
             $siteUrl = parse_url(get_site_url());
             $currentUrl = parse_url($_SERVER['HTTP_ORIGIN']);
 
@@ -87,7 +90,7 @@ class ApiButtons {
         return [
             'plugin' => 'buttonizer',
             'status' => 'success',
-            'result' => (new \Buttonizer\Frontend\Buttonizer())->returnArray(),
+            'result' => (new \Buttonizer\Frontend\Buttonizer($isNoAjaxRequest))->returnArray(),
             'warning' => \Buttonizer\Frontend\Buttonizer::getLogs(),
             'premium' => ButtonizerLicense()->can_use_premium_code()
         ];

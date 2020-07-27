@@ -41,7 +41,7 @@ try {
     if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
         $_SERVER ['HTTPS'] = 'on';
     }
-    $serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 's' : '').'://'.$host;
+    $serverDomain  = 'http'.((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on') ? 's' : '').'://'.$host;
     $serverUrlSelf = preg_match('/^[\\\\\/]?$/', dirname($_SERVER['SCRIPT_NAME'])) ? '' : dirname($_SERVER['SCRIPT_NAME']);
 
     $GLOBALS['DUPX_INIT']     = str_replace('\\', '/', dirname(__FILE__));
@@ -295,9 +295,11 @@ if (!empty($unespectOutput)) {
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.css.php');
-		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.js.php');
+    ?>
+    <script src="<?php echo $GLOBALS['DUPX_INIT_URL'];?>/assets/inc.libs.js?v=<?php echo $GLOBALS['DUPX_AC']->version_dup; ?>"></script>
+    <?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.js.php');
-	?>
+    ?>
 </head>
 <body id="body-<?php echo $GLOBALS["VIEW"]; ?>" >
 

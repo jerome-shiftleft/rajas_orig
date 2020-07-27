@@ -127,6 +127,8 @@ class OMAPI_Actions {
 					$args['optin_monster_api_action_type'] = 'error';
 				}
 			break;
+			default:
+			break;
 		}
 
 		// Now redirect to prevent reloads from undoing actions.
@@ -154,6 +156,8 @@ class OMAPI_Actions {
 				break;
 			case 'sidebar':
 				$field = false;
+				break;
+			default:
 				break;
 		}
 
@@ -188,25 +192,35 @@ class OMAPI_Actions {
 	public function cookies() {
 
 		$optins = $this->base->get_optins();
-		foreach ( (array) $optins as $optin ) {
-			if ( $optin ) {
-				// Array of ids so all splits are included
-				$ids = get_post_meta( $optin->ID, '_omapi_ids', true );
-				foreach ( (array) $ids as $id ) {
-					setcookie( 'om-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-success-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-second-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( 'om-' . $id . '-closed', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( ! empty( $optins ) ) {
+			foreach ( (array) $optins as $optin ) {
+				if ( $optin ) {
+					// Array of ids so all splits are included
+					$ids = get_post_meta( $optin->ID, '_omapi_ids', true );
+					foreach ( (array) $ids as $id ) {
+						setcookie( 'om-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-success-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'omSuccess-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-second-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'omSlideClosed-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'omSeen-' . $id, '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+						setcookie( 'om-' . $id . '-closed', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+					}
 				}
 			}
 		}
 
 		// Clear out global cookie.
 		setcookie( 'om-global-cookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		setcookie( 'omGlobalSuccessCookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
 		// Clear out interaction cookie.
 		setcookie( 'om-interaction-cookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		setcookie( 'omGlobalInteractionCookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
 		// Clear out generic success cookie.
 		setcookie( 'om-success-cookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		setcookie( 'omSuccessCookie', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		setcookie( 'omSessionStart', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
+		setcookie( 'omSessionPageviews', '', -1, COOKIEPATH, COOKIE_DOMAIN, false );
 
 		return true;
 
@@ -226,10 +240,16 @@ class OMAPI_Actions {
 
 		switch ( $action ) {
 			case 'status' :
-				$notice = 'success' == $type ? sprintf( __( 'The campaign status was updated successfully. You can configure more specific loading requirements by <a href="%s" title="Click here to edit the output settings for the updated campaign.">editing the output settings</a> for the campaign.', 'optin-monster-api' ), esc_url_raw( add_query_arg( array( 'page' => 'optin-monster-api-settings', 'optin_monster_api_view' => 'optins', 'optin_monster_api_action' => 'edit', 'optin_monster_api_id' => $this->optin_id ), admin_url( 'admin.php' ) ) ) ) : __( 'There was an error updating the campaign status. Please try again.', 'optin-monster-api' );
+				$notice = 'success' === $type
+					? sprintf( __( 'The campaign status was updated successfully. You can configure more specific loading requirements by <a href="%s" title="Click here to edit the output settings for the updated campaign.">editing the output settings</a> for the campaign.', 'optin-monster-api' ), esc_url_raw( add_query_arg( array( 'page' => 'optin-monster-api-settings', 'optin_monster_api_view' => 'optins', 'optin_monster_api_action' => 'edit', 'optin_monster_api_id' => $this->optin_id ), admin_url( 'admin.php' ) ) ) )
+					: esc_html__( 'There was an error updating the campaign status. Please try again.', 'optin-monster-api' );
 			break;
 			case 'cookies' :
-				$notice = 'success' == $type ? __( 'The local cookies have been cleared successfully.', 'optin-monster-api' ) : __( 'There was an error clearing the local cookies. Please try again.', 'optin-monster-api' );
+				$notice = 'success' === $type
+					? esc_html__( 'The local cookies have been cleared successfully.', 'optin-monster-api' )
+					: esc_html__( 'There was an error clearing the local cookies. Please try again.', 'optin-monster-api' );
+			break;
+			default:
 			break;
 		}
 
@@ -257,7 +277,7 @@ class OMAPI_Actions {
 		}
 
 		foreach ( $this->notices as $id => $message ) {
-			echo '<div class="notice notice-' . $id . '"><p>' . $message . '</p></div>';
+			echo '<div class="notice notice-' . esc_attr( $id ) . '"><p>' . $message . '</p></div>';
 		}
 
 	}

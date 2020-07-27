@@ -11,7 +11,7 @@
  * Plugin Name:			GS Logo Slider Lite
  * Plugin URI:			https://www.gsplugins.com/wordpress-plugins
  * Description:       	Best Responsive Logo slider to display partners, clients or sponsors Logo on Wordpress site. Display anywhere at your site using shortcode like [gs_logo theme="slider1"] Check more shortcode examples and documention at <a href="http://logo.gsplugins.com">GS Logo Slider Docs</a> 
- * Version:           	1.8.10
+ * Version:           	1.8.11
  * Author:       		GS Plugins
  * Author URI:       	https://www.gsplugins.com
  * Text Domain:       	gslogo
@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Defining constants
  */
-if( ! defined( 'GSL_VERSION' ) ) define( 'GSL_VERSION', '1.8.10' );
+if( ! defined( 'GSL_VERSION' ) ) define( 'GSL_VERSION', '1.8.11' );
 if( ! defined( 'GSL_MENU_POSITION' ) ) define( 'GSL_MENU_POSITION', 33 );
 if( ! defined( 'GSL_PLUGIN_DIR' ) ) define( 'GSL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 if( ! defined( 'GSL_PLUGIN_URI' ) ) define( 'GSL_PLUGIN_URI', plugins_url( '', __FILE__ ) );
@@ -81,14 +81,16 @@ if ( ! function_exists('gs_logo_pro_link') ) {
 function appsero_init_tracker_gs_logo_slider() {
 
     if ( ! class_exists( 'AppSero\Insights' ) ) {
-        require_once GSL_FILES_DIR . '/client-master/src/insights.php';
+        require_once GSL_FILES_DIR . '/appsero/src/Client.php';
     }
 
-    $insights = new AppSero\Insights( '2f95117b-b1c6-4486-88c0-6b6d815856bf', 'GS Logo Slider', __FILE__ );
-    $insights->init_plugin();
+    $client = new Appsero\Client( '2f95117b-b1c6-4486-88c0-6b6d815856bf', 'GS Logo Slider', __FILE__ );
+     // Active insights
+    $client->insights()->init();
+ 
 }
 
-add_action( 'init', 'appsero_init_tracker_gs_logo_slider' );
+appsero_init_tracker_gs_logo_slider();
 
 
 /**

@@ -57,7 +57,7 @@ class ApiReset {
 
         // Current Settings
         update_option('buttonizer_settings', [
-                'migration_version' => "2.1",
+                'migration_version' => "2.2",
                 "import_icon_library" => true
         ]);
         delete_option('buttonizer_rules');

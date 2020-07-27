@@ -218,3 +218,13 @@ Stack trace:
 #5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
 #6 {main}
   thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124
+[03-Jul-2020 23:18:58 America/Boise] PHP Fatal error:  Uncaught Exception: DateTime::__construct(): Failed to parse time string (5353-30-44 31:63 BZ) at position 6 (0): Unexpected character in /home3/rajasfas/public_html/reminder/ICS.php:124
+Stack trace:
+#0 /home3/rajasfas/public_html/reminder/ICS.php(124): DateTime->__construct('5353-30-44 31:6...')
+#1 /home3/rajasfas/public_html/reminder/ICS.php(114): ICS->format_timestamp('5353-30-44 31:6...')
+#2 /home3/rajasfas/public_html/reminder/ICS.php(67): ICS->sanitize_val('5353-30-44 31:6...', 'dtstart')
+#3 /home3/rajasfas/public_html/reminder/ICS.php(63): ICS->set('dtstart', '5353-30-44 31:6...')
+#4 /home3/rajasfas/public_html/reminder/ICS.php(57): ICS->set(Array)
+#5 /home3/rajasfas/public_html/reminder/fitting.php(14): ICS->__construct(Array)
+#6 {main}
+  thrown in /home3/rajasfas/public_html/reminder/ICS.php on line 124

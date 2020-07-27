@@ -78,9 +78,9 @@ function hashbar_wpnb_options_page(  ) {
 
 
 		<div class="hashbar_pro_details">
-			<a class="buy_pro" target="_blank" href="https://1.envato.market/jjQE6">Buy PRO</a>
-			<a class="banner" target="_blank" href="https://1.envato.market/jjQE6"><img src="<?php echo esc_url( HASHBAR_WPNB_URI . '/admin/img/hashbarpro-banner.jpg'); ?>"></a>
-			<p>HashBar Pro <a target="_blank" href="https://1.envato.market/jjQE6">More Details</a></p>
+			<a class="buy_pro" target="_blank" href="https://hasthemes.com/0lx0">Buy PRO</a>
+			<a class="banner" target="_blank" href="https://hasthemes.com/0lx0"><img src="<?php echo esc_url( HASHBAR_WPNB_URI . '/admin/img/hashbarpro-banner.jpg'); ?>"></a>
+			<p>HashBar Pro <a target="_blank" href="https://hasthemes.com/0lx0">More Details</a></p>
 		</div>
 	</form>
 	<?php
