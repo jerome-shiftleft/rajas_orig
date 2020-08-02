@@ -3086,3 +3086,23 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1
+[27-Jul-2020 19:03:03 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function get_header() in /home3/rajasfas/public_html/wp-content/themes/salient/index.php:1
+Stack trace:
+#0 {main}
+  thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1
+[29-Jul-2020 13:33:06 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function get_header() in /home3/rajasfas/public_html/wp-content/themes/salient/index.php:1
+Stack trace:
+#0 {main}
+  thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1
+[30-Jul-2020 17:34:38 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function get_header() in /home3/rajasfas/public_html/wp-content/themes/salient/index.php:1
+Stack trace:
+#0 {main}
+  thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1
+[31-Jul-2020 18:18:22 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function get_header() in /home3/rajasfas/public_html/wp-content/themes/salient/index.php:1
+Stack trace:
+#0 {main}
+  thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1
+[01-Aug-2020 18:35:01 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function get_header() in /home3/rajasfas/public_html/wp-content/themes/salient/index.php:1
+Stack trace:
+#0 {main}
+  thrown in /home3/rajasfas/public_html/wp-content/themes/salient/index.php on line 1

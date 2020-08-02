@@ -57,18 +57,20 @@ class OMAPI_Widget extends WP_Widget {
 		// Load the base class object.
 		$this->base = OMAPI::get_instance();
 
-		$widget_ops = apply_filters( 'optin_monster_api_widget_ops',
+		$widget_ops = apply_filters(
+			'optin_monster_api_widget_ops',
 			array(
 				'classname'   => 'optin-monster-api',
-				'description' => esc_html__( 'Place an OptinMonster campaign into a widgetized area.', 'optin-monster-api' )
+				'description' => esc_html__( 'Place an OptinMonster campaign into a widgetized area.', 'optin-monster-api' ),
 			)
 		);
 
-		$control_ops = apply_filters( 'optin_monster_api_widget_control_ops',
+		$control_ops = apply_filters(
+			'optin_monster_api_widget_control_ops',
 			array(
 				'id_base' => 'optin-monster-api',
 				'height'  => 350,
-				'width'   => 225
+				'width'   => 225,
 			)
 		);
 
@@ -124,9 +126,13 @@ class OMAPI_Widget extends WP_Widget {
 			}
 
 			// Load the optin.
-			optin_monster( $optin->ID, 'id', array(
-				'followrules' => ! empty( $instance['followrules'] ) ? 'true' : 'false',
-			) );
+			optin_monster(
+				$optin->ID,
+				'id',
+				array(
+					'followrules' => ! empty( $instance['followrules'] ) ? 'true' : 'false',
+				)
+			);
 		}
 
 		do_action( 'optin_monster_api_widget_after_optin', $args, $instance );

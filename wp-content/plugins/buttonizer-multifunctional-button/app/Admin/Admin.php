@@ -30,10 +30,10 @@ class Admin
      */
     public function __construct()
     {
-        // Let's wait for Wordpress to initialize... Otherwise we are way to early
-        add_action( 'init', [ $this, 'wordpress_initialized' ] );
-        // // Lets do some admin stuff for Buttonizer
+        // Lets do some admin stuff for Buttonizer
         add_action( 'admin_init', [ $this, 'adminPages' ] );
+        // Add admin menu
+        add_action( 'admin_menu', [ $this, 'pluginAdminMenu' ] );
         //If it's not using a permalink structure, add notice
         if ( !get_option( 'permalink_structure' ) ) {
             add_action( 'admin_notices', [ $this, 'permalink_admin_notice' ] );
@@ -51,18 +51,9 @@ class Admin
     }
     
     /**
-     * Wordpress initialized
-     */
-    public function wordpress_initialized()
-    {
-        // Add Buttonizer to the Admin menu
-        $this->pluginAdminMenu();
-    }
-    
-    /**
      * Create Admin menu
      */
-    private function pluginAdminMenu()
+    public function pluginAdminMenu()
     {
         // Admin menu
         add_menu_page(
@@ -83,11 +74,35 @@ class Admin
             'manage_options',
             'admin.php?page=Buttonizer#/settings'
         );
+        // Add community link
+        add_submenu_page(
+            'Buttonizer',
+            __( 'Community', 'buttonizer-multifunctional-button' ),
+            __( 'Community', 'buttonizer-multifunctional-button' ),
+            'manage_options',
+            'https://community.buttonizer.pro/?referral=buttonizer-plugin-menu'
+        );
+        // Add knowledge base link
+        add_submenu_page(
+            'Buttonizer',
+            __( 'Knowledge base', 'buttonizer-multifunctional-button' ),
+            __( 'Knowledge base', 'buttonizer-multifunctional-button' ),
+            'manage_options',
+            'https://community.buttonizer.pro/knowledgebase?referral=buttonizer-plugin-menu'
+        );
+        // Add support link
+        add_submenu_page(
+            'Buttonizer',
+            __( 'I need support', 'buttonizer-multifunctional-button' ),
+            __( 'I need support', 'buttonizer-multifunctional-button' ),
+            'manage_options',
+            'https://community.buttonizer.pro/t/support?referral=buttonizer-plugin-menu'
+        );
         // Plugin information, add links
         add_filter( "plugin_action_links_" . plugin_basename( BUTTONIZER_PLUGIN_DIR ), function ( $aLinks ) {
             $aButtonizerLinks = [
-                '<a href="' . admin_url( 'admin.php?page=Buttonizer-contact' ) . '">' . __( 'I need support', 'buttonizer-multifunctional-button' ) . '</a><br />',
                 '<a href="https://community.buttonizer.pro/" target="_blank">' . __( 'Community forums', 'buttonizer-multifunctional-button' ) . '</a>',
+                '<a href="https://community.buttonizer.pro/knowledgebase" target="_blank">' . __( 'Knowledge base', 'buttonizer-multifunctional-button' ) . '</a>',
                 '<a href="' . admin_url( 'admin.php?page=Buttonizer' ) . '">' . __( 'Manage buttons', 'buttonizer-multifunctional-button' ) . '</a>',
                 '<a href="' . admin_url( 'admin.php?page=Buttonizer#/settings' ) . '">' . __( 'Settings', 'buttonizer-multifunctional-button' ) . '</a>'
             ];
@@ -100,14 +115,6 @@ class Admin
      */
     public function adminPages()
     {
-        // Buttonizer community
-        
-        if ( isset( $_GET['page'] ) && $_GET['page'] === 'Buttonizer-wp-support-forum' ) {
-            // Hide some stuff
-            wp_redirect( "https://community.buttonizer.pro/?referral=buttonizer-plugin-menu" );
-            exit;
-        }
-        
         // Register Buttonizer admin template
         
         if ( isset( $_GET['page'] ) && $_GET['page'] === 'Buttonizer' && !ButtonizerLicense()->is_activation_mode() ) {

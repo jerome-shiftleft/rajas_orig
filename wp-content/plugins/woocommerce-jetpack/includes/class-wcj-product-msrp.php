@@ -2,7 +2,7 @@
 /**
  * Booster for WooCommerce - Module - Product MSRP
  *
- * @version 4.9.0
+ * @version 5.1.1
  * @since   3.6.0
  * @author  Pluggabl LLC.
  */
@@ -18,7 +18,7 @@ class WCJ_Product_MSRP extends WCJ_Module {
 	/**
 	 * Constructor.
 	 *
-	 * @version 4.4.0
+	 * @version 5.1.1
 	 * @since   3.6.0
 	 * @todo    (maybe) option to change `_wcj_msrp` meta key
 	 * @todo    (maybe) REST API
@@ -27,7 +27,6 @@ class WCJ_Product_MSRP extends WCJ_Module {
 	 * @todo    (maybe) `[wcj_product_msrp]` shortcode (and link to "Product Info" module in description)
 	 */
 	function __construct() {
-
 		$this->id         = 'product_msrp';
 		$this->short_desc = __( 'Product MSRP', 'woocommerce-jetpack' );
 		$this->extra_desc = __( 'The <strong>manufacturer\'s suggested retail price</strong> (<strong>MSRP</strong>), also known as the <strong>list price</strong>, or the <strong>recommended retail price</strong> (<strong>RRP</strong>), or the <strong>suggested retail price</strong> (<strong>SRP</strong>), of a product is the price at which the manufacturer recommends that the retailer sell the product.', 'woocommerce-jetpack' ) . '<br>' .
@@ -57,6 +56,11 @@ class WCJ_Product_MSRP extends WCJ_Module {
 
 			// Get current template path
 			add_action( 'woocommerce_before_template_part', array( $this, 'get_current_template_path' ), 10 );
+			add_filter( 'wc_get_template_part', function ( $template, $slug, $name ) {
+				$final = $slug . '-' . $name;
+				$this->current_template_path = $final;
+				return $template;
+			}, 10, 3 );
 		}
 
 	}
@@ -153,15 +157,33 @@ class WCJ_Product_MSRP extends WCJ_Module {
 	}
 
 	/**
+	 * get_section_id_by_template_path.
+	 *
+	 * @version 5.1.0
+	 * @since   5.1.0
+	 *
+	 * @param $template
+	 *
+	 * @return string
+	 */
+	function get_section_id_by_template_path( $template ) {
+		$archive_detection_method = $this->get_option( 'wcj_product_msrp_archive_detection_method', 'loop' );
+		$archive_detection_method = array_values( array_filter( explode( PHP_EOL, $archive_detection_method ) ) );
+		return count( array_filter( $archive_detection_method, function ( $item ) use ( $template ) {
+			return strpos( $template, $item ) !== false;
+		} ) ) == 0 && is_singular() ? 'single' : 'archives';
+	}
+
+	/**
 	 * display.
 	 *
-	 * @version 4.9.0
+	 * @version 5.1.0
 	 * @since   3.6.0
 	 * @todo    (maybe) multicurrency
 	 * @todo    (feature) (maybe) variable product's msrp: add another option to enter MSRP directly for the whole variable product, instead of taking first variation's MSRP
 	 */
 	function display( $price_html, $product ) {
-		$section_id = false !== strpos( $this->current_template_path, 'loop' ) ? 'archives' : 'single';
+		$section_id = $this->get_section_id_by_template_path( $this->current_template_path );
 		$display    = get_option( 'wcj_product_msrp_display_on_' . $section_id, 'show' );
 		if ( 'hide' == $display ) {
 			return $price_html;

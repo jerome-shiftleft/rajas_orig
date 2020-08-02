@@ -44,7 +44,8 @@ class License
                 'menu'            => array(
                 'slug'       => 'Buttonizer',
                 'first-path' => 'admin.php?page=Buttonizer&welcome-splash=true',
-                'support'    => true,
+                'support'    => false,
+                'contact'    => false,
             ),
                 'is_live'         => true,
             ) );

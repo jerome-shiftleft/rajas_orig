@@ -268,6 +268,7 @@ class Translations {
             'ok' => __('OK', 'buttonizer-multifunctional-button'),
             'ok_fix' => __('OK, I\'ll fix this', 'buttonizer-multifunctional-button'),
             'sure' => __('I\'m sure', 'buttonizer-multifunctional-button'),
+            'lost' => __('How\'d ya get here?'),
 
             'close' => __('Close', 'buttonizer-multifunctional-button'),
             'cancel' => __('Cancel', 'buttonizer-multifunctional-button'),

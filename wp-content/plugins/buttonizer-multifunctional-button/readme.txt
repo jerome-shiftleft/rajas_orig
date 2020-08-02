@@ -4,7 +4,7 @@ Buy plugin: https://buttonizer.pro
 Tags: Conversion, action button, call, marketing, Social Sharing
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 2.1.7
+Stable tag: 2.1.9
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -154,6 +154,27 @@ And the beauty of all: All actions are hidden in one button. The moment a visito
 In fact, Buttonizer is an addiction to use. Your website visitors will interact as never before.
 
 == Changelog ==
+= 2.1.9 =
+Release date: 17 July 2020
+
+**Changelog:**
+- Fixed issue with advanced position setting.
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
+= 2.1.8 =
+Release date: 6 July 2020
+
+**Changelog:**
+- Fixed issue with position settings.
+- Fixed uneven labels.
+- Fixed animation setting not working.
+- Fixed error 403( ) in Buttonizer dashboard.
+- Fixed issue with user roles.
+- Show full error message if saving fails.
+
+If you experience bugs, problems or you just have some feedback, let us know on our [Buttonizer community](https://community.buttonizer.pro/)!
+
 = 2.1.7 =
 Release date: 24 June 2020
 

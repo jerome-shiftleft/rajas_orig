@@ -77,4 +77,23 @@ class OMAPI_Utils {
 		return function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
 	}
 
+	/**
+	 * Ensures a unique array.
+	 *
+	 * @since  1.9.10
+	 *
+	 * @param  array $val Array to clean.
+	 *
+	 * @return array       Cleaned array.
+	 */
+	public static function unique_array( $val ) {
+		if ( empty( $val ) ) {
+			return array();
+		}
+
+		$val = array_filter( $val );
+
+		return array_unique( $val );
+	}
+
 }

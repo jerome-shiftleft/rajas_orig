@@ -3,7 +3,7 @@
  * Plugin Name: Simple Custom CSS and JS
  * Plugin URI: https://wordpress.org/plugins/custom-css-js/
  * Description: Easily add Custom CSS or JS to your website with an awesome editor.
- * Version: 3.31.1
+ * Version: 3.32.2
  * Author: SilkyPress.com
  * Author URI: https://www.silkypress.com
  * License: GPL2
@@ -12,7 +12,7 @@
  * Domain Path: /languages/
  *
  * WC requires at least: 2.3.0
- * WC tested up to: 4.1
+ * WC tested up to: 4.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -172,9 +172,7 @@ if ( ! class_exists( 'CustomCSSandJS' ) ) :
 
 				if ( $where === 'internal' && ( strstr( $_filename, 'css' ) || strstr( $_filename, 'js' ) ) ) {
 					if ( $this->settings['remove_comments'] || empty( $type_attr ) ) {
-						ob_start();
-						@include_once CCJ_UPLOAD_DIR . '/' . $_filename;
-						$custom_code = ob_get_clean();
+						$custom_code = @file_get_contents( CCJ_UPLOAD_DIR . '/' . $_filename );
 						if ( $this->settings['remove_comments'] ) {
 								$custom_code = str_replace( array( 
 										'<!-- start Simple Custom CSS and JS -->' . PHP_EOL, 
@@ -186,7 +184,7 @@ if ( ! class_exists( 'CustomCSSandJS' ) ) :
 						}
 						echo $custom_code;
 					} else {
-						@include_once CCJ_UPLOAD_DIR . '/' . $_filename;
+						echo @file_get_contents( CCJ_UPLOAD_DIR . '/' . $_filename );
 					}
 				}
 
@@ -219,7 +217,7 @@ if ( ! class_exists( 'CustomCSSandJS' ) ) :
 		function set_constants() {
 			$dir       = wp_upload_dir();
 			$constants = array(
-				'CCJ_VERSION'     => '3.31.1',
+				'CCJ_VERSION'     => '3.32.2',
 				'CCJ_UPLOAD_DIR'  => $dir['basedir'] . '/custom-css-js',
 				'CCJ_UPLOAD_URL'  => $dir['baseurl'] . '/custom-css-js',
 				'CCJ_PLUGIN_FILE' => __FILE__,

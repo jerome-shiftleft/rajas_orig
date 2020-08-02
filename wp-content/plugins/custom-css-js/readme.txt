@@ -4,8 +4,8 @@ Contributors: diana_burduja
 Email: diana@burduja.eu
 Tags: CSS, JS, javascript, custom CSS, custom JS, custom style, site css, add style, customize theme, custom code, external css, css3, style, styles, stylesheet, theme, editor, design, admin
 Requires at least: 3.0.1
-Tested up to: 5.4 
-Stable tag: 3.31.1
+Tested up to: 5.5 
+Stable tag: 3.32.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.2.4
@@ -14,7 +14,7 @@ Easily add Custom CSS or JS to your website with an awesome editor.
 
 == Description ==
 
-Customize your WordPress site's appearance by easily adding custom CSS and JS code without even having to modify your theme or plugin files. This is perfect for adding custom CSS tweaks to your site.
+Customize your WordPress site's appearance by easily adding custom CSS and JS code without even having to modify your theme or plugin files. This is perfect for adding custom CSS tweaks to your site. 
 
 = Features =
 * **Text editor** with syntax highlighting 
@@ -90,7 +90,7 @@ By default only the Administrator will be able to publish/edit/delete Custom Cod
 * If the [qTranslate X](https://wordpress.org/plugins/qtranslate-x/) plugin is adding some `[:]` or `[:en]` characters to your code, then you need to remove the `custom-css-js` post type from the qTranslate settings. Check out [this screenshot](https://www.silkypress.com/wp-content/uploads/2016/08/ccj_qtranslate_compatibility.png) on how to do that.
 
 = My website has HTTPS urls, but the codes are linked as HTTP =
-The URL for the linked Codes is built just like the URL for other media (from Media Library) by using the WordPress Address option found on the WP Admin -> Settings -> General page, as shown in [this screenshot](https://www.silkypress.com/wp-content/uploads/2016/12/ccj-siteurl.png). If the WordPress Address has HTTPS in the url, then the Custom Codes and all the other media will have HTTPS in the url.
+The URL for the linked Codes is built just like the URL for other media (from Media Library) by using the WordPress Address option found on the WP Admin -> Settings -> General page, as shown in [this screenshot](https://www.silkypress.com/wp-content/uploads/2016/12/ccj-siteurl.png). If the WordPress Address has HTTPS in the url, then the Custom Codes and all the other media will have HTTPS in the url. 
 
 
 == Screenshots ==
@@ -105,6 +105,16 @@ $. Add/Edit HTML
 
 == Changelog ==
 
+= 3.32.2  =
+* 07/14/2020
+* Fix: use file_get_contents instead of include_once to load the custom codes
+
+= 3.32  =
+* 07/08/2020
+* Fix: compatibility issue with the Product Slider for WooCommerce by ShapedPlugin
+* Feature: "Ctrl + /" in the editor will comment out the code
+* Feature: order custom codes table by "type" and "active" state
+* Feature: autocomplete in the editor
 
 = 3.31.1 =
 * 05/05/2020

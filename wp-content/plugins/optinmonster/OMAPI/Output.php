@@ -101,7 +101,7 @@ class OMAPI_Output {
 
 		// Checking if AMP is enabled.
 		if ( OMAPI_Utils::is_amp_enabled() ) {
-		    return;
+			return;
 		}
 
 		// Set our object.
@@ -138,7 +138,7 @@ class OMAPI_Output {
 		$rules = new OMAPI_Rules();
 
 		// Keep these around for back-compat.
-		$this->fields   = $rules->fields;
+		$this->fields = $rules->fields;
 
 	}
 
@@ -148,7 +148,11 @@ class OMAPI_Output {
 	 * @since 1.0.0
 	 */
 	public function api_script() {
-		wp_enqueue_script( $this->base->plugin_slug . '-api-script', $this->base->get_api_url(), array(), null );
+
+		// A hook to change the API location. Using this hook, we can force to load in header; default location is footer
+		$in_footer = apply_filters( 'optin_monster_api_loading_location', true );
+
+		wp_enqueue_script( $this->base->plugin_slug . '-api-script', $this->base->get_api_url(), array(), null, $in_footer );
 
 		if ( version_compare( get_bloginfo( 'version' ), '4.1.0', '>=' ) ) {
 			add_filter( 'script_loader_tag', array( $this, 'filter_api_script' ), 10, 2 );
@@ -175,9 +179,11 @@ class OMAPI_Output {
 		}
 
 		// Adjust the output to the JS version embed and to add our custom script ID.
-		return $this->om_script_tag( array(
-			'id' => 'omapi-script',
-		) );
+		return $this->om_script_tag(
+			array(
+				'id' => 'omapi-script',
+			)
+		);
 	}
 
 	/**
@@ -287,7 +293,7 @@ class OMAPI_Output {
 
 		// Prepare variables.
 		$post_id = self::current_id();
-		$optins = $this->base->get_optins();
+		$optins  = $this->base->get_optins();
 
 		// If no optins are found, return early.
 		if ( empty( $optins ) ) {
@@ -448,7 +454,12 @@ class OMAPI_Output {
 
 		// Output the JS variables to signify shortcode parsing is needed.
 		?>
-		<script type="text/javascript"><?php foreach ( $this->slugs as $slug => $data ) { echo 'var ' . $slug . '_shortcode = true;'; } ?></script>
+		<script type="text/javascript">
+		<?php
+		foreach ( $this->slugs as $slug => $data ) {
+			echo 'var ' . $slug . '_shortcode = true;'; }
+		?>
+		</script>
 		<?php
 
 	}
@@ -489,9 +500,9 @@ class OMAPI_Output {
 		if ( $this->base->is_mailpoet_active() ) {
 			wp_enqueue_script(
 				$this->base->plugin_slug . '-wp-mailpoet',
-				plugins_url( 'assets/js/mailpoet.js', OMAPI_FILE ),
+				$this->base->url . 'assets/js/mailpoet.js',
 				array( 'jquery' ),
-				$this->base->version . ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : '' ),
+				$this->base->asset_version(),
 				true
 			);
 		}
@@ -505,9 +516,9 @@ class OMAPI_Output {
 	public function wp_helper() {
 		wp_enqueue_script(
 			$this->base->plugin_slug . '-wp-helper',
-			plugins_url( 'assets/js/helper.js', OMAPI_FILE ),
+			$this->base->url . 'assets/js/helper.js',
 			array(),
-			$this->base->version . ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? time() : '' ),
+			$this->base->asset_version(),
 			true
 		);
 	}
@@ -594,7 +605,7 @@ class OMAPI_Output {
 	 *
 	 * @since  1.5.0
 	 *
-	 * @param  object  $optin The option post object.
+	 * @param  object $optin The option post object.
 	 *
 	 * @return string         The optin campaign html.
 	 */
@@ -609,7 +620,7 @@ class OMAPI_Output {
 	 *
 	 * @since  1.5.0
 	 *
-	 * @param  bool  $should_output Whether it should output.
+	 * @param  bool        $should_output Whether it should output.
 	 * @param  OMAPI_Rules $rules   OMAPI_Rules object
 	 *
 	 * @return array
@@ -711,8 +722,8 @@ class OMAPI_Output {
 	 *
 	 * @since  1.9.8
 	 *
-	 * @param  array   $args Array of arguments for the script, including
-	 *                       optional user id, account id, and script id.
+	 * @param  array $args Array of arguments for the script, including
+	 *                     optional user id, account id, and script id.
 	 *
 	 * @return string        The embed script JS.
 	 */
@@ -736,18 +747,18 @@ class OMAPI_Output {
 			? sprintf( 's.dataset.env="%s";', esc_attr( OPTINMONSTER_ENV ) )
 			: '';
 
-		$tag = '<script>';
-			$tag .= '(function(d){';
-				$tag .= 'var s=d.createElement("script");';
-				$tag .= 's.type="text/javascript";';
-				$tag .= 's.src="%1$s";';
-				$tag .= 's.async=true;';
-				$tag .= '%2$s';
-				$tag .= '%3$s';
-				$tag .= '%4$s';
-				$tag .= '%5$s';
-				$tag .= 'd.getElementsByTagName("head")[0].appendChild(s);';
-			$tag .= '})(document);';
+		$tag  = '<script>';
+		$tag .= '(function(d){';
+		$tag .= 'var s=d.createElement("script");';
+		$tag .= 's.type="text/javascript";';
+		$tag .= 's.src="%1$s";';
+		$tag .= 's.async=true;';
+		$tag .= '%2$s';
+		$tag .= '%3$s';
+		$tag .= '%4$s';
+		$tag .= '%5$s';
+		$tag .= 'd.getElementsByTagName("head")[0].appendChild(s);';
+		$tag .= '})(document);';
 		$tag .= '</script>';
 
 		return sprintf(

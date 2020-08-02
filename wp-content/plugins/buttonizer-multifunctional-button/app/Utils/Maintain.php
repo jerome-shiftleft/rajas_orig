@@ -114,6 +114,18 @@ class Maintain {
                     'href' => admin_url() . 'admin.php?page=Buttonizer#/settings/preferences',
                     'meta' => array(),
                 ));
+
+                // Settings
+                $admin_bar->add_menu(array(
+                    'id' => 'buttonizer_knowledgebase',
+                    'parent' => 'buttonizer',
+                    'title' => __('Knowledge base', 'buttonizer-multifunctional-button'),
+                    'href' => "https://community.buttonizer.pro/knowledgebase",
+                    'meta' => [
+                        "target" => "_blank",
+                        "title" => __('Find out everything you need to know about Buttonizer', 'buttonizer-multifunctional-button')
+                    ],
+                ));
             }
         }
     }

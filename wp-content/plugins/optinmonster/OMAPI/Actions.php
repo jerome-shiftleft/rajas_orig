@@ -68,7 +68,7 @@ class OMAPI_Actions {
 
 		// Add validation messages.
 		add_action( 'admin_init', array( $this, 'actions' ) );
-		add_action( 'admin_init', array( $this, 'fetch_missing_data' ) );
+		add_action( 'admin_init', array( $this, 'fetch_missing_data' ), 99 );
 		add_action( 'admin_notices', array( $this, 'notices' ) );
 
 	}
@@ -106,35 +106,32 @@ class OMAPI_Actions {
 		}
 
 		// Prepare variable of args for admin notice.
-		$args = array();
+		$args                                  = array();
 		$args['optin_monster_api_action_done'] = $action;
-		$args['optin_monster_api_view'] = 'optins';
 
 		switch ( $action ) {
-			case 'status' :
+			case 'status':
 				if ( $this->status() ) {
 					$args['optin_monster_api_action_type'] = 'success';
 					$args['optin_monster_api_action_id']   = $this->optin_id;
 				} else {
 					$args['optin_monster_api_action_type'] = 'error';
 				}
-			break;
+				break;
 
-			case 'cookies' :
+			case 'cookies':
 				if ( $this->cookies() ) {
 					$args['optin_monster_api_action_type'] = 'success';
 				} else {
 					$args['optin_monster_api_action_type'] = 'error';
 				}
-			break;
+				break;
 			default:
-			break;
+				break;
 		}
 
 		// Now redirect to prevent reloads from undoing actions.
-		$redirect = esc_url_raw( add_query_arg( $args, admin_url( 'admin.php?page=optin-monster-api-settings' ) ) );
-		die( wp_redirect( $redirect ) );
-
+		$this->base->menu->redirect_to_dashboard( 'optins', $args );
 	}
 
 	/**
@@ -239,18 +236,29 @@ class OMAPI_Actions {
 		$notice = '';
 
 		switch ( $action ) {
-			case 'status' :
-				$notice = 'success' === $type
-					? sprintf( __( 'The campaign status was updated successfully. You can configure more specific loading requirements by <a href="%s" title="Click here to edit the output settings for the updated campaign.">editing the output settings</a> for the campaign.', 'optin-monster-api' ), esc_url_raw( add_query_arg( array( 'page' => 'optin-monster-api-settings', 'optin_monster_api_view' => 'optins', 'optin_monster_api_action' => 'edit', 'optin_monster_api_id' => $this->optin_id ), admin_url( 'admin.php' ) ) ) )
-					: esc_html__( 'There was an error updating the campaign status. Please try again.', 'optin-monster-api' );
-			break;
-			case 'cookies' :
+			case 'status':
+				if ( 'success' === $type ) {
+					$url = $this->base->menu->get_settings_link(
+						'optins',
+						array(
+							'optin_monster_api_action' => 'edit',
+							'optin_monster_api_id'     => $this->optin_id,
+						)
+					);
+
+					$notice = sprintf( __( 'The campaign status was updated successfully. You can configure more specific loading requirements by <a href="%s" title="Click here to edit the output settings for the updated campaign.">editing the output settings</a> for the campaign.', 'optin-monster-api' ), esc_url_raw( $url ) );
+				} else {
+					$notice = esc_html__( 'There was an error updating the campaign status. Please try again.', 'optin-monster-api' );
+				}
+
+				break;
+			case 'cookies':
 				$notice = 'success' === $type
 					? esc_html__( 'The local cookies have been cleared successfully.', 'optin-monster-api' )
 					: esc_html__( 'There was an error clearing the local cookies. Please try again.', 'optin-monster-api' );
-			break;
+				break;
 			default:
-			break;
+				break;
 		}
 
 		return $notice;
@@ -264,8 +272,8 @@ class OMAPI_Actions {
 	public function notices() {
 
 		// Check to see if any notices should be output based on query args.
-		$action = isset( $_GET['optin_monster_api_action_done'] ) ? strip_tags( stripslashes( $_GET['optin_monster_api_action_done' ] ) ) : false;
-		$type   = isset( $_GET['optin_monster_api_action_type'] ) ? strip_tags( stripslashes( $_GET['optin_monster_api_action_type' ] ) ) : false;
+		$action = isset( $_GET['optin_monster_api_action_done'] ) ? strip_tags( stripslashes( $_GET['optin_monster_api_action_done'] ) ) : false;
+		$type   = isset( $_GET['optin_monster_api_action_type'] ) ? strip_tags( stripslashes( $_GET['optin_monster_api_action_type'] ) ) : false;
 
 		// Maybe set the optin ID if it is available.
 		if ( isset( $_GET['optin_monster_api_action_id'] ) ) {
@@ -297,30 +305,30 @@ class OMAPI_Actions {
 		$changed = false;
 
 		// If we don't have an API Key yet, we can't fetch anything else.
-		if ( ! $creds['apikey'] && ! $creds['user'] && ! $creds['key'] ) {
+		if ( empty( $creds['apikey'] ) && empty( $creds['user'] ) && empty( $creds['key'] ) ) {
 			return;
 		}
 
 		// Fetch the userId and accountId, if we don't have them
 		if ( empty( $option['userId'] ) || empty( $option['accountId'] ) ) {
-			$api = OMAPI_Api::build( 'v2', 'me', 'GET' );
+			$api  = OMAPI_Api::build( 'v2', 'me', 'GET' );
 			$body = $api->request();
 
 			if ( isset( $body->id, $body->accountId ) ) {
 				$option['userId']    = $body->id;
 				$option['accountId'] = $body->accountId;
-				$changed = true;
+				$changed             = true;
 			}
-
 		}
 
 		// Fetch the SiteIds for this site, if we don't have them
-		if ( empty( $option['siteIds'] ) ) {
-			$sites = $this->base->sites->fetch();
-			$option['siteIds']      = $sites['ids'];
-			$option['customApiUrl'] = $sites['customApiUrl'];
+		if ( empty( $option['siteIds'] ) || empty( $option['siteId'] ) || $this->siteIdsAreNumeric( $option['siteIds'] ) ) {
 
-			$changed = true;
+			$result = $this->base->sites->fetch();
+			if ( ! is_wp_error( $result ) ) {
+				$option  = array_merge( $option, $result );
+				$changed = true;
+			}
 		}
 
 		// Only update the option if we've changed something
@@ -330,4 +338,23 @@ class OMAPI_Actions {
 
 	}
 
+
+	/**
+	 * In one version of the Plugin, we fetched the numeric SiteIds,
+	 * But we actually needed the alphanumeric SiteIds.
+	 *
+	 * So we use this check to determine if we need to re-fetch Site Ids
+	 *
+	 * @param array $siteIds
+	 * @return bool True if the ids are numeric
+	 */
+	protected function siteIdsAreNumeric( $site_ids ) {
+		foreach ( $site_ids as $id ) {
+			if ( ! ctype_digit( (string) $id ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

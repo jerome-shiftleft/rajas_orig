@@ -83,7 +83,7 @@ class OMAPI_Type {
 		register_post_type(
 			'omapi',
 			array(
-				'labels' => apply_filters(
+				'labels'          => apply_filters(
 					'optin_monster_api_post_type_labels',
 					array(
 						'name'               => _x( 'Campaigns', 'post type general name', 'optin-monster-api' ),

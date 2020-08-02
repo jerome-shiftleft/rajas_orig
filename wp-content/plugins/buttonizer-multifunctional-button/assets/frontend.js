@@ -3921,8 +3921,8 @@ var Group_Group = /*#__PURE__*/function () {
       var result = input.match(/(left|right|top|bottom):\s?(\d{1,3})\s?.+;?/i);
       if (result === null) return {};
       return {
-        value: Number(result[2]),
-        mode: result[1]
+        value: typeof Number(result[2]) === "number" ? Number(result[2]) : 5,
+        mode: result[1].toLowerCase()
       };
     }
     /**

@@ -64,6 +64,8 @@ class CustomCSSandJS_Admin {
 			'wp_ajax_ccj_permalink'      => 'wp_ajax_ccj_permalink',
 			'post_submitbox_start'       => 'post_submitbox_start',
 			'restrict_manage_posts'      => 'restrict_manage_posts',
+			'load-post.php'              => 'contextual_help',
+			'load-post-new.php'          => 'contextual_help',
 			'edit_form_before_permalink' => 'edit_form_before_permalink',
 			'before_delete_post'         => 'before_delete_post',
 		);
@@ -74,6 +76,9 @@ class CustomCSSandJS_Admin {
 		// Add some custom actions/filters
 		add_action( 'manage_custom-css-js_posts_custom_column', array( $this, 'manage_posts_columns' ), 10, 2 );
 		add_filter( 'manage_edit-custom-css-js_sortable_columns', array( $this, 'manage_edit_posts_sortable_columns' ) );
+		add_action( 'posts_orderby', array( $this, 'posts_orderby' ), 10, 2 );
+		add_action( 'posts_join_paged', array( $this, 'posts_join_paged' ), 10, 2 );
+		add_action( 'posts_where_paged', array( $this, 'posts_where_paged' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
 		add_filter( 'parse_query', array( $this, 'parse_query' ), 10 );
 
@@ -149,6 +154,19 @@ class CustomCSSandJS_Admin {
 			wp_enqueue_script( 'cm-searchcursor', $cma . 'search/searchcursor.js', array( 'ccj-codemirror' ), $v, false );
 			wp_enqueue_script( 'cm-jump-to-line', $cma . 'search/jump-to-line.js', array( 'ccj-codemirror' ), $v, false );
 			wp_enqueue_style( 'cm-dialog', $cma . 'dialog/dialog.css', array(), $v );
+			wp_enqueue_script( 'ccj-comment', $cma . 'comment/comment.js', array( 'ccj-codemirror' ), $v, false );
+
+
+			// Hint Addons
+			wp_enqueue_script( 'ccj-hint', $cma . 'hint/show-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_script( 'ccj-hint-js', $cma . 'hint/javascript-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_script( 'ccj-hint-xml', $cma . 'hint/xml-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_script( 'ccj-hint-html', $cma . 'hint/html-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_script( 'ccj-hint-css', $cma . 'hint/css-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_script( 'ccj-hint-anyword', $cma . 'hint/anyword-hint.js', array( 'ccj-codemirror' ), $v, false );
+			wp_enqueue_style( 'ccj-hint', $cma . 'hint/show-hint.css', array(), $v );
+
+
 
 			// remove the assets from other plugins so it doesn't interfere with CodeMirror
 			global $wp_scripts;
@@ -166,6 +184,9 @@ class CustomCSSandJS_Admin {
 					}
 				}
 			}
+			// remove the CodeMirror library added by the Product Slider for WooCommerce plugin by ShapedPlugin
+			wp_enqueue_style( 'spwps-codemirror', $a . '/empty.css', '1.0' );
+			wp_enqueue_script( 'spwps-codemirror', $a . '/empty.js', array(), '1.0', true );
 		}
 	}
 
@@ -175,7 +196,10 @@ class CustomCSSandJS_Admin {
 	 */
 	public function cm_localize() {
 
+		$settings = get_option( 'ccj_settings' );
+
 		$vars = array(
+			'autocomplete'   => isset( $settings['ccj_autocomplete'] ) && ! $settings['ccj_autocomplete'] ? false : true,
 			'active'         => __( 'Active', 'custom-css-js' ),
 			'inactive'       => __( 'Inactive', 'custom-css-js' ),
 			'activate'       => __( 'Activate', 'custom-css-js' ),
@@ -326,6 +350,8 @@ class CustomCSSandJS_Admin {
 	 * Make the 'Modified' column sortable
 	 */
 	function manage_edit_posts_sortable_columns( $columns ) {
+		$columns['active'] = 'active';
+		$columns['type'] = 'type';
 		$columns['modified']  = 'modified';
 		$columns['published'] = 'published';
 		return $columns;
@@ -388,6 +414,62 @@ class CustomCSSandJS_Admin {
 			echo '<option ' . $selected . ' value="' . $_lang . '">' . $_label . '</option>';
 		}
 		echo '</select>';
+	}
+
+
+	/**
+	 * Order table by Type and Active columns
+	 *
+	 */
+	function posts_orderby( $orderby, $query ) {
+		if ( ! is_admin() ) {
+			return $orderby;
+		}
+		global $wpdb;
+
+		if ( 'custom-css-js' === $query->get( 'post_type' ) && 'type' === $query->get( 'orderby' ) ) {
+			$orderby = "REGEXP_SUBSTR( {$wpdb->prefix}postmeta.meta_value, 'js|html|css') " . $query->get( 'order' );
+		}
+		if ( 'custom-css-js' === $query->get( 'post_type' ) && 'active' === $query->get( 'orderby' ) ) {
+			$orderby = "coalesce( postmeta1.meta_value, 'p' ) " . $query->get( 'order' );
+		}
+		return $orderby;
+	}
+
+
+	/**
+	 * Order table by Type and Active columns
+	 */
+	function posts_join_paged( $join, $query ) {
+		if ( ! is_admin() ) {
+			return $join;
+		}
+		global $wpdb;
+
+		if ( 'custom-css-js' === $query->get( 'post_type' ) && 'type' === $query->get( 'orderby' ) ) {
+			$join = "LEFT JOIN {$wpdb->prefix}postmeta ON {$wpdb->prefix}posts.ID = {$wpdb->prefix}postmeta.post_id";
+		}
+
+		if ( 'custom-css-js' === $query->get( 'post_type' ) && 'active' === $query->get( 'orderby' ) ) {
+			$join = "LEFT JOIN (SELECT post_id AS ID, meta_value FROM {$wpdb->prefix}postmeta WHERE meta_key = '_active' ) as postmeta1 USING( ID )";
+		}
+		return $join;
+	}
+
+
+	/**
+	 * Order table by Type and Active columns
+	 */
+	function posts_where_paged( $where, $query ) {
+		if ( ! is_admin() ) {
+			return $where;
+		}
+		global $wpdb;
+
+		if ( 'custom-css-js' === $query->get( 'post_type' ) && 'type' === $query->get( 'orderby' ) ) {
+			$where .= " AND {$wpdb->prefix}postmeta.meta_key = 'options'";
+		}
+		return $where;
 	}
 
 
@@ -1065,6 +1147,7 @@ End of comment */ ',
 			$before = '/******* Do not edit this file *******' . PHP_EOL .
 			'Simple Custom CSS and JS - by Silkypress.com' . PHP_EOL .
 			'Saved: ' . date( 'M d Y | H:i:s' ) . ' */' . PHP_EOL;
+			$after = '';
 		}
 
 		if ( wp_is_writable( CCJ_UPLOAD_DIR ) ) {
@@ -1382,6 +1465,33 @@ endif;
 		$this->edit_form_before_permalink( $slug, $permalink, $filetype );
 
 		wp_die();
+	}
+
+
+	/**
+	 * Show contextual help for the Custom Code edit page
+	 */
+	public function contextual_help() {
+		$screen = get_current_screen();
+
+		if ( $screen->id != 'custom-css-js' ) {
+			return;
+		}
+
+		$screen->add_help_tab(
+			array(
+				'id'      => 'ccj-editor_shortcuts',
+				'title'   => __( 'Editor Shortcuts', 'custom-css-js-pro' ),
+				'content' =>
+							  '<p><table>
+            <tr><td><strong>Auto Complete</strong></td><td> <code>Ctrl</code> + <code>Space</code></td></tr>
+            <tr><td><strong>Find</strong></td><td> <code>Ctrl</code> + <code>F</code></td></tr>
+            <tr><td><strong>Replace</strong></td><td> <code>Shift</code> + <code>Ctrl</code> + <code>F</code></td></tr>
+            <tr><td><strong>Comment line/block</strong></td><td> <code>Ctrl</code> + <code>/</code></td></tr>
+            </table></p>',
+			)
+		);
+
 	}
 
 

@@ -18,7 +18,10 @@ jQuery(document).ready( function($) {
             matchBrackets: true,
             autoCloseBrackets: true,
             extraKeys: {
+                "Ctrl-Space": "autocomplete",
                 "Ctrl-F": "findPersistent",
+				"Cmd-/" : "toggleComment",
+				"Ctrl-/" : "toggleComment"
             },
         };
 
@@ -44,6 +47,16 @@ jQuery(document).ready( function($) {
             var cm_height = $('.CodeMirror').height();
             editor.setSize(cm_width, cm_height);
         });
+
+
+		// Autocomplete
+		if ( CCJ.autocomplete === '1' ) {
+			editor.on( "keyup", function ( cm, event ) {
+				if ( ! cm.state.completionActive && event.keyCode > 64 && event.keyCode < 91 ) {
+					CodeMirror.commands.autocomplete( cm, null, { completeSingle: false } );
+				}
+			});
+		}
 
         var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 
